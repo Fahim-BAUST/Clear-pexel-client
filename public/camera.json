@@ -1,0 +1,100 @@
+[
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/sony/%20alpha-a6000/a6000-228x228.jpg",
+        " name": "Sony Alpha A6000",
+        "category": "sony",
+        "details": "24.3-megapixel APS-C image sensor=BIONZ X image processing engine=One-touch remote and sharing =High-resolution OLED Tru-Finder",
+        "rating": 5,
+        "cost": 94000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/digital-camera/sony/alpha-a6400/alpha-a6400-1-228x228.jpg",
+        " name": "Sony Alpha A6400",
+        "category": "sony",
+        "details": "24.2MP APS-C Exmor CMOS Sensor=BIONZ X Image Processor=Real-Time Eye AF; Real-Time Tracking=XGA Tru-Finder 2.36m-Dot OLED EVF",
+        "rating": 4.5,
+        "cost": 93000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/sony/%20alpha-a7-m3/a7-mark-3-228x228.jpg",
+        " name": "Sony Alpha A7 ",
+        "category": "sony",
+        "details": "5-axis image stabilization=BIONZ X image processing engine=35 mm 24.3 MP 7 Exmor CMOS sensor=High-resolution OLED Tru-Finder",
+        "rating": 5,
+        "cost": 158000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/camera/dslr-camera/sony/alpha-a7r-iii-42mp/alpha-a7r-iii-42mp-228x228.jpg",
+        " name": "Sony Alpha a7R",
+        "category": "sony",
+        "details": "42MP Full-Frame Exmor R BSI CMOS Sensor=399-Point AF System=BIONZ X Image Processor=UHD 4K30p Video with HLG",
+        "rating": 4,
+        "cost": 70000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/sony/a7-ii/a7-ii-228x228.jpg",
+        " name": "Sony A7 II ALPHA",
+        "category": "sony",
+        "details": "5-axis image stabilization=BIONZ X image processing engine=35 mm 24.3 MP 7Exmor CMOS sensor=High-resolution OLED Tru-Finder",
+        "rating": 3.5,
+        "cost": 68000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/camera/mirriorless/sony/alpha-a6100/alpha-a6100-228x228.jpg",
+        " name": "Sony ALPHA A6100",
+        "category": "sony",
+        "details": " Silent continuous shooting at up to 8fps=Real-time Tracking=Autofocus you can rely on= Real-time Eye AF for human",
+        "rating": 5,
+        "cost": 65000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/nikon/d-3500/d-3500-228x228.jpg",
+        " name": "Nikon D3500",
+        "category": "nikon",
+        "details": "DX 24.2 Megapixels=100-25,600 ISO=5 FPS Continuous Shooting=Full HD 1080p at 60/50/30/25/24p",
+        "rating": 4.5,
+        "cost": 42000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/nikon/d5600/d5600-1-228x228.jpg",
+        " name": "Nikon D5600 ",
+        "category": "nikon",
+        "edition": "1st Published, 2021",
+        "details": " DX-Format CMOS Sensor=EXPEED 4 Image Processor=24.2 Megapixel=5 fps continues shooting",
+        "rating": 3,
+        "cost": 30000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/dslr-camera/nikon/d7500-4k/d7500-01-228x228.jpg",
+        " name": "NIKON D7500",
+        "category": "nikon",
+        "details": "20.9MP DX-Format CMOS Sensor=EXPEED 5 Image Processor=3.2 922k-Dot Tilting Touchscreen LCD=4K UHD Video Recording at 30 fps",
+        "rating": 5,
+        "cost": 85000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/camera/dslr-camera/panasonic/lumix-g7/g7-1-228x228.jpg",
+        " name": "Panasonic Lumix G7",
+        "category": "panasonic",
+        "details": "16MP Digital Live MOS Sensor & Venus Engine=Micro Four Thirds sensor=Dual I.S. 2=Wi-Fi + Bluetooth",
+        "rating": 4,
+        "cost": 59000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/camera/dslr-camera/panasonic/lumix-gh5/gh5-001-228x228.jpg",
+        " name": "Panasonic Lumix GH5",
+        "category": "panasonic",
+        "details": "20.3MP Digital Live MOS Sensor & Venus Engine=0.3MP Micro Four Thirds sensor=Dual I.S. 2=Wi-Fi + Bluetooth",
+        "rating": 5,
+        "cost": 170000
+    },
+    {
+        "image": "https://www.startech.com.bd/image/cache/catalog/camera/dslr-camera/panasonic/lumix-g85/g85-01-228x228.jpg",
+        " name": "Panasonic Lumix",
+        "category": "panasonic",
+        "edition": "1st Published, 2021",
+        "details": "16MP Digital Live MOS Sensor & Venus Engine=5-Axis Gyro Sensor Compensation=Shutter Shock Reduction=Dual I.S. Effective To 5 Stops",
+        "rating": 5,
+        "cost": 80000
+    }
+]

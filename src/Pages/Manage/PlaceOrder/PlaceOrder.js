@@ -8,9 +8,9 @@ import Font from 'react-font';
 const PlaceOrder = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [prod, setProd] = useState([]);
-    const [total, setTotal] = useState(null);
+    const [total, setTotal] = useState(0);
+    const [tax, setTax] = useState(0);
     const [hDelete, sethDelete] = useState(false);
-    const [description, setDescription] = useState([])
     const { user } = useAuth();
     const email = user.email;
     let sum = 0;
@@ -22,9 +22,12 @@ const PlaceOrder = () => {
             .then(data => {
                 setProd(data);
                 data.map(p => {
-                    sum = sum + p.price;
+                    sum = sum + parseInt(p.price);
                 })
-                setTotal(sum);
+                const tax = (5 * sum) / 100;
+                const shipping = 50;
+                setTax(tax);
+                setTotal(sum + shipping + tax);
 
             })
 
@@ -132,9 +135,40 @@ const PlaceOrder = () => {
                         <br />
                         <Divider></Divider>
 
-                        <Font family="Mochiy Pop One">
-                            <p className="text-center"> ToTall Cost: <span> {total}</span> TK </p>
-                        </Font>
+                        <div className="row d-flex align-items-center justify-content-around">
+                            <div className=" text-center  col">
+                                <p className=" fw-bold"> Shipping cost :  </p>
+                            </div>
+                            <div className=" text-center col">
+                                <p className=" fw-bold">  <span className="text-danger"> 50</span> TK </p>
+                            </div>
+
+                        </div>
+                        <div className="row d-flex align-items-center justify-content-around">
+                            <div className=" text-center  col">
+                                <p className=" fw-bold"> Tax (5%) :  </p>
+                            </div>
+                            <div className=" text-center col">
+                                <p className=" fw-bold">  <span className="text-danger"> {tax}</span> TK </p>
+                            </div>
+
+                        </div>
+                        <div className="row d-flex align-items-center justify-content-around">
+                            <div className=" text-center col">
+                                <Font family="Mochiy Pop One">
+
+                                    <p className="text-center"> ToTall Cost : </p>
+                                </Font>
+                            </div>
+                            <div className=" text-center col">
+                                <Font family="Mochiy Pop One">
+
+                                    <p className="text-center"><span className="text-danger"> {total}</span> TK </p>
+                                </Font>
+                            </div>
+                        </div>
+
+
                         <Divider></Divider>
                         <br />
                         <Divider></Divider>
@@ -145,7 +179,7 @@ const PlaceOrder = () => {
                         <Font family="Mochiy Pop One">
                             <Typography className="text-center" sx={{ fontWeight: "bold", color: "#3F000F", marginBottom: 5, fontSize: "2em" }} ><span >Place Order</span> </Typography>
                         </Font>
-                        <form className="" onSubmit={handleSubmit(onSubmit)}>
+                        <form className=" mb-5" onSubmit={handleSubmit(onSubmit)}>
 
 
                             <input className="form-control" aria-label="Username" aria-describedby="basic-addon1" defaultValue={user.displayName} {...register("name")} />

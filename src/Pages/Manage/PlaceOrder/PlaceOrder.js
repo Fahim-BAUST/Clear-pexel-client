@@ -1,7 +1,6 @@
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import Header from '../../Shared/Header/Header';
 import Font from 'react-font';
@@ -9,34 +8,73 @@ import Font from 'react-font';
 const PlaceOrder = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [prod, setProd] = useState([]);
+    const [total, setTotal] = useState(null);
+    const [hDelete, sethDelete] = useState(false);
     const [description, setDescription] = useState([])
     const { user } = useAuth();
-    const { id } = useParams();
+    const email = user.email;
+    let sum = 0;
 
-
-    const url = `https://gentle-fortress-91581.herokuapp.com/products/${id}`;
+    const url = `https://gentle-fortress-91581.herokuapp.com/addToCart/cart/${email}`;
     useEffect(() => {
         fetch(url)
             .then(res => res.json())
             .then(data => {
                 setProd(data);
-                const desc = data.details;
-                const newdesc = desc.split("=");
-                setDescription(newdesc);
+                data.map(p => {
+                    sum = sum + p.price;
+                })
+                setTotal(sum);
 
             })
 
+    }, [prod, hDelete]);
 
-    }, [url]);
+    const handleDeleteclick = (id) => {
+        const proceed = window.confirm("Are you sure, You want to delete?");
+        if (proceed) {
+            const url = `https://gentle-fortress-91581.herokuapp.com/cart/${id}`;
+            fetch(url, {
+                method: "DELETE",
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.deletedCount === 1) {
+                        alert("Successfully deleted ");
+                        const remainingOrders = prod.filter((order) => order?._id !== id);
+                        setProd(remainingOrders);
+                    } else {
+                        alert("No documents matched the query. Deleted 0 documents.");
+                    }
+                });
+        }
+    };
+
+    const handleDeleteAll = (email) => {
+        const proceed = window.confirm("Are you sure, You want to delete?");
+        if (proceed) {
+            const url = `https://gentle-fortress-91581.herokuapp.com/cartRemove/${email}`;
+            fetch(url, {
+                method: "DELETE",
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.acknowledged === true) {
+                        alert("Successfully deleted ");
+                        sethDelete(true);
+                    } else {
+                        alert("No documents matched the query. Deleted 0 documents.");
+                    }
+                });
+        }
+    };
 
     const onSubmit = data => {
+        data.order = prod;
         data.orderStatus = "Pending";
-        data.orderId = prod._id;
-        data.orderName = prod.name;
-        data.price = prod.cost;
-        data.image = prod.image;
+        data.totalPrice = total;
 
-        fetch('https://gentle-fortress-91581.herokuapp.com/orders', {
+        fetch('https://gentle-fortress-91581.herokuapp.com/cartToOrders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -57,17 +95,55 @@ const PlaceOrder = () => {
             <Header></Header>
             <div className="container mt-3">
                 <div className="row">
-                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                        <img className="img-fluid" src={prod.image} alt="" />
-                        <h3 className="mt-3">{prod?.name} </h3>
-                        <h5 style={{ fontFamily: "cursive" }} className="mt-2">{prod?.cost} TK</h5>
-                        <Typography sx={{ fontWeight: 500, color: "#2b2b2b", marginBottom: 5, fontFamily: "initial", fontSize: "20px" }} ><ul>
-                            {description.map(description => <li>{description}</li>)}
-                        </ul> </Typography>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
                         <Font family="Mochiy Pop One">
-                            <Typography sx={{ fontWeight: 500, color: "#3F000F", marginBottom: 5, fontSize: "3em" }} ><span >Place Order</span> </Typography>
+                            <Typography className="text-center" sx={{ fontWeight: "bold", color: "#3F000F", marginBottom: 5, fontSize: "2em" }} ><span >Your Orders</span> </Typography>
+                        </Font>
+                        <div className="text-end">
+
+                            <button onClick={() => handleDeleteAll(user?.email)} type="button" className="btn btn-danger fw-bold"><i className="fas fa-broom"></i>Clear?</button>
+                        </div>
+
+                        {prod.map(product => <div
+                            className="row d-flex align-items-center ">
+                            <div className=" text-center col">
+                                <img className="img-fluid w-50" src={product?.image} alt="" />
+                            </div>
+                            <div className=" text-center col">
+                                <p>{product?.orderName}</p>
+                            </div>
+                            <div className=" text-center col">
+                                <p>{product?.price}</p>
+                            </div>
+
+                            <div className=" text-center col">
+                                <button
+                                    onClick={() => handleDeleteclick(product?._id)}
+                                    className="ms-1 border-0"
+                                >
+                                    <i className="fas fa-trash text-danger"></i>
+                                </button>
+                            </div>
+                            <Divider></Divider>
+
+
+                        </div>)}
+                        <br />
+                        <Divider></Divider>
+
+                        <Font family="Mochiy Pop One">
+                            <p className="text-center"> ToTall Cost: <span> {total}</span> TK </p>
+                        </Font>
+                        <Divider></Divider>
+                        <br />
+                        <Divider></Divider>
+
+                    </div>
+
+                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
+                        <Font family="Mochiy Pop One">
+                            <Typography className="text-center" sx={{ fontWeight: "bold", color: "#3F000F", marginBottom: 5, fontSize: "2em" }} ><span >Place Order</span> </Typography>
                         </Font>
                         <form className="" onSubmit={handleSubmit(onSubmit)}>
 

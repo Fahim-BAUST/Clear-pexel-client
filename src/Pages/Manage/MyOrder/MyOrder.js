@@ -75,8 +75,8 @@ const MyOrder = () => {
                                 <tr>
                                     <th scope="row">*</th>
                                     <td>{order?.name}</td>
-                                    <td>{order?.orderName}</td>
-                                    <td>{order?.price}$</td>
+                                    <td><ul>{order?.order?.map(name => <li> {name.orderName} </li>)}</ul></td>
+                                    <td>{order?.totalPrice}$</td>
 
                                     <td>
                                         {order?.orderStatus === "Pending" && (

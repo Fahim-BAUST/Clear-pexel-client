@@ -65,6 +65,18 @@ const Header = () => {
                                     <i className="fas fa-viruses"></i> Dashboard
                                 </NavLink>}
 
+                                {user?.email && <NavLink
+                                    className="nav-link text-dark fw-bold"
+                                    to="/placeOrder"
+
+                                    activeStyle={{
+                                        fontWeight: "bolder"
+
+                                    }}
+                                >
+                                    Cart<i className="fas fa-cart-arrow-down text-warning fw-bold"></i>
+                                </NavLink>}
+
 
 
                                 {user?.photoURL && <img style={{ width: "35px" }} className="img-fluid rounded-circle me-3  text-white" src={user.photoURL} alt="" />}

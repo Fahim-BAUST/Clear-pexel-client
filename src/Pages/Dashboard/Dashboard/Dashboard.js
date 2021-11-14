@@ -14,7 +14,8 @@ import {
     Switch,
     Route,
     Link,
-    useRouteMatch
+    useRouteMatch,
+    NavLink
 } from "react-router-dom";
 import MyOrder from '../../Manage/MyOrder/MyOrder';
 import ManageAllOrder from '../../Manage/ManageAllOrder/ManageAllOrder';
@@ -85,7 +86,7 @@ function Dashboard(props) {
                         ml: { sm: `${drawerWidth}px` },
                     }}
                 >
-                    <Toolbar>
+                    <Toolbar sx={{ justifyContent: 'space-between' }}>
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
@@ -98,6 +99,21 @@ function Dashboard(props) {
                         <Typography variant="h6" noWrap component="div">
                             Dashboard
                         </Typography>
+                        <div className="">
+
+                            <NavLink
+                                className=" text-light  text-decoration-none fs-5"
+                                to="/placeOrder"
+
+                                activeStyle={{
+                                    fontWeight: "bolder"
+
+                                }}
+                            >
+                                Cart<i className="fas fa-cart-arrow-down text-warning fw-bold ms-2"></i>
+                            </NavLink>
+                        </div>
+
                     </Toolbar>
                 </AppBar>
                 <Box

@@ -78,7 +78,7 @@ const ManageAllOrder = () => {
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name: </th>
-                                <th scope="col">Ordered: </th>
+                                <th scope="col">Order item: </th>
                                 <th scope="col">Price: </th>
                                 <th scope="col">Email: </th>
                                 <th scope="col">Phone: </th>
@@ -97,8 +97,8 @@ const ManageAllOrder = () => {
                                     <tr>
                                         <th scope="row">*</th>
                                         <td>{order?.name}</td>
-                                        <td>{order?.orderName}</td>
-                                        <td>{order?.price}$</td>
+                                        <td><ul>{order?.order?.map(name => <li> {name.orderName} </li>)}</ul></td>
+                                        <td>{order?.totalPrice}$</td>
                                         <td>{order?.email}</td>
                                         <td>{order?.phone}</td>
 

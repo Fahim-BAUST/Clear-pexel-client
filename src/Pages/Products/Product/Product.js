@@ -1,11 +1,38 @@
 import { Button, Card, CardContent, CardMedia, Rating, Typography } from '@mui/material';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import useAuth from '../../Hooks/useAuth';
 
 const Product = (props) => {
     const { image, name, rating, details, offfer, cost, _id } = props.product
+    const { user } = useAuth();
 
     const desc = details?.split("=");
+
+
+    const handleAddToCart = () => {
+        const data = {};
+        data.product = _id;
+        data.orderName = name;
+        data.price = cost;
+        data.image = image;
+        data.email = user?.email;
+
+        fetch('https://gentle-fortress-91581.herokuapp.com/addToCart', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.insertedId) {
+                    alert('Product added to cart Successfully');
+                }
+            })
+
+    }
     return (
         <div>
             <Card className="service-card" style={{ border: "3px solid #E0FFFF" }}>
@@ -38,12 +65,14 @@ const Product = (props) => {
                         className="fw-bold " variant="h5" >
                         <span className="fw-bold mt-3">{cost} TK </span>
                     </Typography>
-                    <NavLink className="text-decoration-none" to={`/placeOrder/${_id}`}>
-                        <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginLeft: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Buy Now </Button>
-                    </NavLink>
+
+                    {user?.email ? <Button onClick={handleAddToCart} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginLeft: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
+                        :
+
+                        <Link to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginLeft: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                        </Link>}
 
                 </div>
-
 
             </Card>
 

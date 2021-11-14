@@ -9,14 +9,17 @@ import Banner from '../Banner/Banner';
 import Header from '../../Shared/Header/Header';
 import Review from '../Review/Review';
 import ImageFlow from '../ImageFlow/ImageFlow';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import useAuth from '../../Hooks/useAuth';
 
 
 const Home = () => {
     const [sony, setSony] = useState([]);
     const [nikon, setNikon] = useState([]);
+    const [allProduct, setAllProduct] = useState([]);
     const [panasonic, setPanasonic] = useState([]);
     const [review, setReview] = useState([]);
+    const { user } = useAuth();
 
     let whirligig;
     const next = () => whirligig.next();
@@ -27,6 +30,7 @@ const Home = () => {
         fetch(url)
             .then(res => res.json())
             .then(data => {
+                setAllProduct(data);
                 const sony = data.filter(data => data?.category === 'sony')
                 setSony(sony);
                 const nikon = data.filter(data => data?.category === 'nikon')
@@ -44,6 +48,29 @@ const Home = () => {
 
     }, [])
 
+    const handleAddToCart = (id, name, cost, image) => {
+        const data = {};
+        data.product = id;
+        data.orderName = name;
+        data.price = cost;
+        data.image = image;
+        data.email = user?.email;
+
+        fetch('https://gentle-fortress-91581.herokuapp.com/addToCart', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.insertedId) {
+                    alert('Product added to cart Successfully');
+                }
+            })
+
+    }
 
 
     return (
@@ -79,7 +106,12 @@ const Home = () => {
                                             <p className="card-text fw-bold mt-3">{camera?.cost} TK</p>
                                         </Font>
                                         <Divider></Divider>
-                                        <NavLink className="text-decoration-none" to={`/placeOrder/${camera?._id}`}> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Buy Now </Button></NavLink> <br />
+                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
+                                            :
+
+                                            <Link to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                                            </Link>}
+
                                     </div>
                                 </div>
                             </div>)
@@ -114,7 +146,11 @@ const Home = () => {
                                             <p className="card-text fw-bold mt-3">{camera?.cost} TK</p>
                                         </Font>
                                         <Divider></Divider>
-                                        <NavLink className="text-decoration-none" to={`/placeOrder/${camera?._id}`}> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Buy Now </Button></NavLink> <br />
+                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
+                                            :
+
+                                            <Link to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                                            </Link>}
 
 
                                     </div>
@@ -148,7 +184,11 @@ const Home = () => {
                                             <p className="card-text fw-bold mt-3">{camera?.cost} TK</p>
                                         </Font>
                                         <Divider></Divider>
-                                        <NavLink className="text-decoration-none" to={`/placeOrder/${camera?._id}`}> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Buy Now </Button></NavLink> <br />
+                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
+                                            :
+
+                                            <Link to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                                            </Link>}
 
 
                                     </div>

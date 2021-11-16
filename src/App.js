@@ -7,6 +7,7 @@ import PrivateRoute from './Pages/Login/PrivateRoute/PrivateRoute';
 import Registration from './Pages/Login/Registration/Registration';
 import PlaceOrder from './Pages/Manage/PlaceOrder/PlaceOrder';
 import NotFound from './Pages/NotFound/NotFound';
+import ProductsDetails from './Pages/Products/ProductDetails/ProductsDetails';
 import Products from './Pages/Products/Products';
 import Footer from './Pages/Shared/Footer/Footer';
 
@@ -26,15 +27,15 @@ function App() {
 
           <Route path="/products">
             <Products></Products>
-
           </Route>
-
           <Route path="/login">
             <Login></Login>
-
           </Route>
           <Route path="/register">
             <Registration></Registration>
+          </Route>
+          <Route path="/productDetails/:id">
+            <ProductsDetails></ProductsDetails>
           </Route>
           <PrivateRoute path="/placeOrder">
             <PlaceOrder></PlaceOrder>
@@ -42,7 +43,6 @@ function App() {
           <PrivateRoute path="/dashboard">
             <Dashboard></Dashboard>
           </PrivateRoute>
-
           <Route exact path="*">
             <NotFound></NotFound>
           </Route>

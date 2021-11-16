@@ -18,6 +18,10 @@
   .rating{
     font-size: 15px !important;
   }
+
+  .search-item{
+    width: 75%;
+  }
    
 }
 
@@ -25,6 +29,9 @@
 @media only screen and (min-width: 481px) and (max-width: 768px) {
   .card img{
       width: 170px;
+  }
+  .search-item{
+    width: 75%;
   }
   
 }
@@ -34,7 +41,9 @@
   .card img{
       width: 170px;
   }
-  
+  .search-item{
+    width: 50%;
+  }  
 }
 
 /* Desktops, large screens */
@@ -42,8 +51,8 @@
   .card img{
       width: 170px;
   }
-  .site-name{
-    
+  .search-item{
+    width: 50%;
   }
   
 }
@@ -51,6 +60,10 @@
 @media only screen and (min-width: 1201px) {
   .card img{
       width: 170px;
+  }
+
+  .search-item{
+    width: 50%;
   }
   
 }

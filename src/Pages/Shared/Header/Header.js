@@ -45,7 +45,7 @@ const Header = () => {
 
                                         }}
                                     >
-                                        <i className="fas fa-camera"></i>   More Camera
+                                        <i className="fas fa-camera"></i>    Camera details
                                     </NavLink>
                                 </li>
 

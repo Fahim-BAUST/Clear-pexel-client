@@ -1,7 +1,10 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import useAuth from '../../Hooks/useAuth';
 const AddReview = () => {
     const [loginData, setLoginData] = useState({});
+    const { user } = useAuth();
     const handleOnChange = e => {
         const field = e.target.name;
         const value = e.target.value;
@@ -35,7 +38,12 @@ const AddReview = () => {
                 <input name="rating" type="text" className="form-control" placeholder="Enter Rating(1 to 5)" aria-label="" onBlur={handleOnChange} />
                 <textarea name="message" className="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style={{ height: "100px" }} onBlur={handleOnChange}></textarea>
                 <label for="floatingTextarea2"></label>
-                <Button type="submit" style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginLeft: 2, marginBottom: 2, fontWeight: "bold", mt: 2 }} variant="contained" size="small">Submit </Button>
+                {user?.email ? <Button type="submit" style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold", mt: 2 }} variant="contained" size="small">Submit </Button>
+                    :
+                    <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold", mt: 2 }} variant="contained" size="small">Login First</Button>
+                    </Link>
+
+                }
             </form>
         </div>
     );

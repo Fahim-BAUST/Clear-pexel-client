@@ -7,6 +7,8 @@ import useAuth from '../../Hooks/useAuth';
 const MyOrder = () => {
     const { user } = useAuth();
 
+    const [buttonToggle, setButtonToggle] = useState(false);
+
     const [orders, setOrders] = useState([]);
     useEffect(() => {
         fetch(`https://gentle-fortress-91581.herokuapp.com/allOrders/${user.email}`)
@@ -59,6 +61,7 @@ const MyOrder = () => {
                             <th scope="col">#</th>
                             <th scope="col">Name:</th>
                             <th scope="col">Ordered:</th>
+                            <th scope="col">Quantity:</th>
                             <th scope="col">Price:</th>
 
                             <th scope="col">Status:</th>
@@ -75,7 +78,8 @@ const MyOrder = () => {
                                 <tr>
                                     <th scope="row">*</th>
                                     <td>{order?.name}</td>
-                                    <td><ul>{order?.order?.map(name => <li> {name.orderName} </li>)}</ul></td>
+                                    <td><ul>{order?.order?.map(order => <li> {order?.orderName} </li>)}</ul></td>
+                                    <td><ul className="list-unstyled ">{order?.order?.map(order => <li> {order?.quantity} </li>)}</ul></td>
                                     <td>{order?.totalPrice}$</td>
 
                                     <td>
@@ -85,7 +89,7 @@ const MyOrder = () => {
                                         {order?.orderStatus === "Shipped" && (
                                             <i className="me-1 fas fa-truck text-info fs-6"></i>
                                         )}
-                                        {order.orderStatus === "Delivered" && (
+                                        {order?.orderStatus === "Delivered" && (
                                             <i class="me-1 fas fa-smile-wink fs-5 text-warning"></i>
                                         )}
                                         {order?.orderStatus === "Approved" && (
@@ -94,12 +98,20 @@ const MyOrder = () => {
                                         {order?.orderStatus}{" "}
                                     </td>
                                     <td>
-                                        <button
+                                        {order?.orderStatus === "Shipped" &&
+                                            <p class="text-warning fw-bold">Your product is on the way</p>
+                                        }
+
+                                        {order?.orderStatus === "Delivered" &&
+                                            <p class="text-warning ">Thanks for your order.please give us a wonderful review</p>
+                                        }
+                                        {(order?.orderStatus === "Pending" || order?.orderStatus === "Approved") && <button
                                             onClick={() => handleDeleteclick(order._id)}
                                             className="ms-1 border-0"
                                         >
                                             <i className="fas fa-trash text-danger"></i>
-                                        </button>
+                                        </button>}
+
                                     </td>
                                 </tr>
                             ))

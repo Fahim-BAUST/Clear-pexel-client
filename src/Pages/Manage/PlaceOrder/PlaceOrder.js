@@ -22,7 +22,7 @@ const PlaceOrder = () => {
             .then(data => {
                 setProd(data);
                 data.map(p => {
-                    sum = sum + parseInt(p.price);
+                    sum = sum + (parseInt(p.price) * parseInt(p.quantity));
                 })
                 const tax = (5 * sum) / 100;
                 const shipping = 50;
@@ -33,7 +33,7 @@ const PlaceOrder = () => {
 
     }, [prod, hDelete]);
 
-    const handleDeleteclick = (id) => {
+    const handleDeleteClick = (id) => {
         const proceed = window.confirm("Are you sure, You want to delete?");
         if (proceed) {
             const url = `https://gentle-fortress-91581.herokuapp.com/cart/${id}`;
@@ -116,13 +116,19 @@ const PlaceOrder = () => {
                             <div className=" text-center col">
                                 <p>{product?.orderName}</p>
                             </div>
+
                             <div className=" text-center col">
-                                <p>{product?.price}</p>
+                                <p>{product?.quantity}</p>
                             </div>
 
                             <div className=" text-center col">
+                                <p>{(product?.quantity) * (product?.price)}</p>
+                            </div>
+
+
+                            <div className=" text-center col">
                                 <button
-                                    onClick={() => handleDeleteclick(product?._id)}
+                                    onClick={() => handleDeleteClick(product?._id)}
                                     className="ms-1 border-0"
                                 >
                                     <i className="fas fa-trash text-danger"></i>

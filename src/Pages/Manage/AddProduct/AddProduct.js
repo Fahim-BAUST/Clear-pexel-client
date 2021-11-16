@@ -39,7 +39,9 @@ const AddProduct = () => {
 
                     <input type="text" className="form-control" aria-label="Username" placeholder="Image url" aria-describedby="basic-addon1" {...register("image", { required: true })} />
                     <br />
-                    <input type="text" className="form-control" aria-label="Username" placeholder="Description" aria-describedby="basic-addon1" {...register("details", { required: true })} />
+                    <input type="text" className="form-control" aria-label="Username" placeholder="Features (write all list with [=])" aria-describedby="basic-addon1" {...register("details", { required: true })} />
+                    <br />
+                    <input type="text" className="form-control" aria-label="Username" placeholder="Description" aria-describedby="basic-addon1" {...register("moreDetails", { required: true })} />
                     <br />
                     {errors.email && <span className="error">This field is required</span>}
 

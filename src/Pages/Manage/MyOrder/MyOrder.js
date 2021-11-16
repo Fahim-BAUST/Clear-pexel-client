@@ -103,7 +103,7 @@ const MyOrder = () => {
                                         }
 
                                         {order?.orderStatus === "Delivered" &&
-                                            <p class="text-success">Thanks for your order.please give us a wonderful review</p>
+                                            <p class="text-success">Thanks for your order. Please give us a wonderful review</p>
                                         }
                                         {(order?.orderStatus === "Pending" || order?.orderStatus === "Approved") && <button
                                             onClick={() => handleDeleteclick(order._id)}

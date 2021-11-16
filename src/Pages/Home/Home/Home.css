@@ -22,6 +22,11 @@
   .search-item{
     width: 75%;
   }
+
+  .input-item{
+    width: 100%;
+
+  }
    
 }
 
@@ -32,6 +37,10 @@
   }
   .search-item{
     width: 75%;
+  }
+  .input-item{
+    width: 100%;
+
   }
   
 }
@@ -44,6 +53,11 @@
   .search-item{
     width: 50%;
   }  
+
+  .input-item{
+    width: 75%;
+
+  }
 }
 
 /* Desktops, large screens */
@@ -53,6 +67,10 @@
   }
   .search-item{
     width: 50%;
+  }
+  .input-item{
+    width: 50%;
+
   }
   
 }
@@ -64,6 +82,10 @@
 
   .search-item{
     width: 50%;
+  }
+  .input-item{
+    width: 50%;
+
   }
   
 }

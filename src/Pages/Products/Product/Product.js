@@ -95,9 +95,9 @@ const Product = (props) => {
                 </div>
 
 
-                <div className="d-flex justify-content-between container">
+                <div className="d-flex justify-content-around ">
 
-                    <Link className="text-decoration-none" to={`/productDetails/${_id}`}>   <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginLeft: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> details </Button></Link>
+                    <Link className="text-decoration-none" to={`/productDetails/${_id}`}>   <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> details </Button></Link>
 
                     {user?.email ? <Button onClick={handleAddToCart} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
                         :

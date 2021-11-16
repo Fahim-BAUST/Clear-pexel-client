@@ -79,10 +79,12 @@ const Header = () => {
 
 
 
-                                {user?.photoURL && <img style={{ width: "35px" }} className="img-fluid rounded-circle me-3  text-white" src={user.photoURL} alt="" />}
+                                {user?.photoURL && <img style={{ width: "35px" }} className="img-fluid rounded-circle   text-white" src={user.photoURL} alt="" />}
+
+                                {user?.email && <span className="me-2">{user.displayName}</span>}
 
                                 {user?.email ?
-                                    <button onClick={logout} className="btn btn-outline-danger" type="submit"><i className="fas fa-sign-in-alt"></i> Logout</button> :
+                                    <button onClick={logout} className="btn btn-outline-danger ms-2" type="submit"><i className="fas fa-sign-in-alt"></i> Logout</button> :
 
                                     <NavLink to="/login"><button className="btn btn-outline-success" type="submit"><i className="fas fa-sign-in-alt"></i> Login</button></NavLink>}
                             </form>

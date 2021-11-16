@@ -11,6 +11,7 @@ const PlaceOrder = () => {
     const [total, setTotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [hDelete, sethDelete] = useState(false);
+    const [home, setHome] = useState(false);
     const { user } = useAuth();
     const email = user.email;
     let sum = 0;
@@ -25,7 +26,7 @@ const PlaceOrder = () => {
                     sum = sum + (parseInt(p.price) * parseInt(p.quantity));
                 })
                 const tax = (5 * sum) / 100;
-                const shipping = 50;
+                const shipping = home === true ? 150 : 50;
                 setTax(tax);
                 setTotal(sum + shipping + tax);
 
@@ -92,6 +93,11 @@ const PlaceOrder = () => {
                 }
             })
     };
+
+    const handleClickedChange = e => {
+        e.target.checked ? setHome(true) : setHome(false);
+    }
+
     return (
         <div>
 
@@ -140,13 +146,22 @@ const PlaceOrder = () => {
                         </div>)}
                         <br />
                         <Divider></Divider>
+                        <div className="row d-flex align-items-center justify-content-around ">
+
+                            <div className="col text-center ">
+                                <p className=" fw-bold mt-3">Home Delivery?</p>
+                            </div>
+                            <div className="col text-center ">
+                                <input style={{ border: "2px solid tomato" }} onChange={handleClickedChange} className="form-check-input " type="checkbox" />
+                            </div>
+                        </div>
 
                         <div className="row d-flex align-items-center justify-content-around">
                             <div className=" text-center  col">
                                 <p className=" fw-bold"> Shipping cost :  </p>
                             </div>
                             <div className=" text-center col">
-                                <p className=" fw-bold">  <span className="text-danger"> 50</span> TK </p>
+                                <p className=" fw-bold">  <span className="text-danger"> {home === true ? 150 : 50}</span> TK </p>
                             </div>
 
                         </div>

@@ -11,6 +11,7 @@ import Review from '../Review/Review';
 import ImageFlow from '../ImageFlow/ImageFlow';
 import { Link, NavLink } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
+import CatagoryProduct from '../CatagoryProduct/CatagoryProduct';
 
 
 const Home = () => {
@@ -19,8 +20,8 @@ const Home = () => {
     const [allProduct, setAllProduct] = useState([]);
     const [panasonic, setPanasonic] = useState([]);
     const [review, setReview] = useState([]);
-    const { user } = useAuth();
-    const [quantity, setQuantity] = useState(1);
+
+
 
     let whirligig;
     const next = () => whirligig.next();
@@ -48,47 +49,6 @@ const Home = () => {
             .then(data => setReview(data))
 
     }, [])
-
-    const handleAddToCart = (id, name, cost, image) => {
-        const data = {};
-        data.product = id;
-        data.orderName = name;
-        data.price = cost;
-        data.image = image;
-        data.email = user?.email;
-        data.quantity = quantity;
-
-        fetch('https://gentle-fortress-91581.herokuapp.com/addToCart', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(res => res.json())
-            .then(result => {
-                if (result.insertedId) {
-                    alert('Product added to cart Successfully');
-                }
-            })
-
-    }
-    const quantityManage = (value) => {
-
-        if (value === true) {
-            const values = quantity + 1;
-            setQuantity(values);
-        }
-        else {
-            if (quantity > 1) {
-                const values = quantity - 1;
-                setQuantity(values);
-            }
-        }
-
-
-    }
-
     return (
 
         <div>
@@ -109,33 +69,10 @@ const Home = () => {
                         ref={(_whirligigInstance) => { whirligig = _whirligigInstance }}
                     >
                         {
-                            sony.map(camera => <div>
-                                <div className="card  text-center">
-                                    <div className="card-body">
-                                        <img src={camera?.image} className="
-                                     img-fluid text-center" alt="..." />
-                                        <p className="fw-bold mt-2">{camera?.name}</p>
-
-                                        <Rating className="rating" name="half-rating-read" value={camera?.rating} precision={0.5} readOnly />
-
-                                        <Font family="Henny Penny">
-                                            <p className="card-text fw-bold mt-3 mb-2">{camera?.cost} TK</p>
-                                        </Font>
-                                        <Divider></Divider>
-                                        <div className="input-group-sm w-50 d-flex text-center mx-auto justify-content-center mt-2">
-                                            <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
-                                            <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato" }} value={quantity} />
-                                            <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>
-                                        </div>
-                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Cart? </Button>
-                                            :
-
-                                            <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
-                                            </Link>}
-
-                                    </div>
-                                </div>
-                            </div>)
+                            sony.map(camera => <CatagoryProduct
+                                key={camera?._id}
+                                products={camera}
+                            ></CatagoryProduct>)
 
                         }
                     </Whirligig>
@@ -155,33 +92,10 @@ const Home = () => {
 
                     >
                         {
-                            nikon.map(camera => <div>
-                                <div className="card  text-center">
-                                    <div className="card-body">
-                                        <img src={camera?.image} className="
-                                     img-fluid text-center" alt="..." />
-                                        <p className="fw-bold mt-2">{camera?.name}</p>
-                                        <Rating className="rating" name="half-rating-read rating" value={camera?.rating} precision={0.5} readOnly />
-
-                                        <Font family="Henny Penny">
-                                            <p className="card-text fw-bold mt-3 mb-2">{camera?.cost} TK</p>
-                                        </Font>
-                                        <Divider></Divider>
-                                        <div className="input-group-sm w-50 d-flex text-center mx-auto justify-content-center mt-2">
-                                            <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
-                                            <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato" }} value={quantity} />
-                                            <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>
-                                        </div>
-                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Cart? </Button>
-                                            :
-
-                                            <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
-                                            </Link>}
-
-
-                                    </div>
-                                </div>
-                            </div>)
+                            nikon.map(camera => <CatagoryProduct
+                                key={camera?._id}
+                                products={camera}
+                            ></CatagoryProduct>)
 
                         }
                     </Whirligig>
@@ -198,33 +112,10 @@ const Home = () => {
 
                     >
                         {
-                            panasonic.map(camera => <div>
-                                <div className="card  text-center">
-                                    <div className="card-body">
-                                        <img src={camera?.image} className="
-                                     img-fluid text-center" alt="..." />
-                                        <p className="fw-bold mt-2">{camera?.name}</p>
-                                        <Rating className="rating" name="half-rating-read rating" value={camera?.rating} precision={0.5} readOnly />
-
-                                        <Font family="Henny Penny">
-                                            <p className="card-text fw-bold mt-3 mb-2">{camera?.cost} TK</p>
-                                        </Font>
-                                        <Divider></Divider>
-                                        <div className="input-group-sm w-50 d-flex text-center mx-auto justify-content-center mt-2">
-                                            <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
-                                            <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato" }} value={quantity} />
-                                            <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>
-                                        </div>
-                                        {user?.email ? <Button onClick={() => handleAddToCart(camera?._id, camera?.name, camera?.cost, camera?.image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Cart? </Button>
-                                            :
-
-                                            <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
-                                            </Link>}
-
-
-                                    </div>
-                                </div>
-                            </div>)
+                            panasonic.map(camera => <CatagoryProduct
+                                key={camera?._id}
+                                products={camera}
+                            ></CatagoryProduct>)
 
                         }
                     </Whirligig>

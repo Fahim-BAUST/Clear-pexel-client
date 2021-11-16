@@ -1,5 +1,5 @@
-import { Button, Rating, TextField, Typography } from '@mui/material';
-import { padding } from '@mui/system';
+import { Button, Rating, Typography } from '@mui/material';
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -91,7 +91,7 @@ const ProductsDetails = () => {
 
                         <Typography className="mt-2 mb-3" variant="body2" color="text.secondary">
                             <ul>
-                                {description?.map(description => <li>{description}</li>)}
+                                {description?.map(description => <li key={description}>{description}</li>)}
                             </ul>
 
                         </Typography>
@@ -117,7 +117,7 @@ const ProductsDetails = () => {
                         {user?.email ? <Button onClick={handleAddToCart} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> addToCart </Button>
                             :
 
-                            <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                            <Link className="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ paddingX: 2, marginBottom: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
                             </Link>}
 
                     </div>

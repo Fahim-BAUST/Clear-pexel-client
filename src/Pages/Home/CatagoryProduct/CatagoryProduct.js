@@ -52,7 +52,7 @@ const CatagoryProduct = (props) => {
     }
     return (
         <div>
-            <div className="card  text-center">
+            <div className="card  text-center ">
                 <div className="card-body">
                     <img src={image} className="
                                      img-fluid text-center" alt="..." />
@@ -72,7 +72,7 @@ const CatagoryProduct = (props) => {
                     {user?.email ? <Button onClick={() => handleAddToCart(_id, name, cost, image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Cart? </Button>
                         :
 
-                        <Link class="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
+                        <Link className="text-decoration-none" to="/login"> <Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> login first </Button>
                         </Link>}
 
                 </div>

@@ -7,8 +7,6 @@ import useAuth from '../../Hooks/useAuth';
 const MyOrder = () => {
     const { user } = useAuth();
 
-    const [buttonToggle, setButtonToggle] = useState(false);
-
     const [orders, setOrders] = useState([]);
     useEffect(() => {
         fetch(`https://gentle-fortress-91581.herokuapp.com/allOrders/${user.email}`)
@@ -75,11 +73,14 @@ const MyOrder = () => {
                             </Box>
                         ) : (
                             orders.map((order) => (
-                                <tr>
+                                <tr
+                                    key={order?._id}
+                                >
                                     <th scope="row">*</th>
                                     <td>{order?.name}</td>
-                                    <td><ul>{order?.order?.map(order => <li> {order?.orderName} </li>)}</ul></td>
-                                    <td><ul className="list-unstyled ">{order?.order?.map(order => <li> {order?.quantity} </li>)}</ul></td>
+                                    <td><ul>{order?.order?.map(order => <li key={order?._id}> {order?.orderName} </li>)}</ul></td>
+                                    <td><ul className="list-unstyled ">{order?.order?.map(order => <li
+                                        key={order?._id}> {order?.quantity} </li>)}</ul></td>
                                     <td>{order?.totalPrice}$</td>
 
                                     <td>
@@ -90,20 +91,20 @@ const MyOrder = () => {
                                             <i className="me-1 fas fa-truck text-info fs-6"></i>
                                         )}
                                         {order?.orderStatus === "Delivered" && (
-                                            <i class="me-1 fas fa-smile-wink fs-5 text-warning"></i>
+                                            <i className="me-1 fas fa-smile-wink fs-5 text-warning"></i>
                                         )}
                                         {order?.orderStatus === "Approved" && (
-                                            <i class="me-1 fas fa-check-circle fs-5 text-success"></i>
+                                            <i className="me-1 fas fa-check-circle fs-5 text-success"></i>
                                         )}
                                         {order?.orderStatus}{" "}
                                     </td>
                                     <td>
                                         {order?.orderStatus === "Shipped" &&
-                                            <p class="text-warning fw-bold">Your product is on the way</p>
+                                            <p className="text-warning fw-bold">Your product is on the way</p>
                                         }
 
                                         {order?.orderStatus === "Delivered" &&
-                                            <p class="text-success">Thanks for your order. Please give us a wonderful review</p>
+                                            <p className="text-success">Thanks for your order. Please give us a wonderful review</p>
                                         }
                                         {(order?.orderStatus === "Pending" || order?.orderStatus === "Approved") && <button
                                             onClick={() => handleDeleteclick(order._id)}

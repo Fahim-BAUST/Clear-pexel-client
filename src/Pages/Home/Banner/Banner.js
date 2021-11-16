@@ -3,7 +3,7 @@ import Font from 'react-font'
 
 const Banner = () => {
     return (
-        <div>
+        <div >
             <Font family="Dancing Script">
                 <h1 className="mt-4 pt-4 mb-5 fw-bold text-center site-name " style={{
                     color: "#3F000F", fontSize: "60px", position: "absolute",

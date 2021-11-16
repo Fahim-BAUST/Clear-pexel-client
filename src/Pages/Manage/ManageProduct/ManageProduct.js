@@ -56,7 +56,8 @@ const ManageProduct = () => {
                     </Typography>
 
                     {products.map(product => <div
-                        className="row d-flex align-items-center ">
+                        className="row d-flex align-items-center "
+                        key={product._id}>
                         <div className=" text-center col">
                             <img className="img-fluid w-50" src={product.image} alt="" />
                         </div>

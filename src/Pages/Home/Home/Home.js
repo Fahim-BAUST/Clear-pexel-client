@@ -4,20 +4,15 @@ import { useState } from 'react';
 import Whirligig from 'react-whirligig'
 import './Home.css'
 import Font from 'react-font';
-import { Button, Divider, Rating, TextField } from '@mui/material';
 import Banner from '../Banner/Banner';
 import Header from '../../Shared/Header/Header';
 import Review from '../Review/Review';
-import ImageFlow from '../ImageFlow/ImageFlow';
-import { Link, NavLink } from 'react-router-dom';
-import useAuth from '../../Hooks/useAuth';
-import CatagoryProduct from '../CatagoryProduct/CatagoryProduct';
 
+import CatagoryProduct from '../CatagoryProduct/CatagoryProduct';
 
 const Home = () => {
     const [sony, setSony] = useState([]);
     const [nikon, setNikon] = useState([]);
-    const [allProduct, setAllProduct] = useState([]);
     const [panasonic, setPanasonic] = useState([]);
     const [review, setReview] = useState([]);
 
@@ -32,14 +27,13 @@ const Home = () => {
         fetch(url)
             .then(res => res.json())
             .then(data => {
-                setAllProduct(data);
                 const sony = data.filter(data => data?.category === 'sony')
                 setSony(sony);
                 const nikon = data.filter(data => data?.category === 'nikon')
                 setNikon(nikon);
                 const panasonic = data.filter(data => data?.category === 'panasonic')
                 setPanasonic(panasonic);
-            })
+            }).catch(error => console.log(error))
 
     }, [])
 
@@ -47,6 +41,7 @@ const Home = () => {
         fetch('https://gentle-fortress-91581.herokuapp.com/review')
             .then(res => res.json())
             .then(data => setReview(data))
+            .catch(error => console.log(error))
 
     }, [])
     return (
@@ -58,7 +53,9 @@ const Home = () => {
             {/* catagory wise data shown */}
             <div style={{ paddingTop: "20px", backgroundColor: "#f1f2f4", marginBottom: "15px", paddingBottom: 20 }}>
 
-                <div className="mt-5 container bg-white p-3 shadow" style={{ borderRadius: "20px" }}>
+                <div data-aos="fade-down-right"
+                    data-aos-easing="linear"
+                    data-aos-duration="1500" className="mt-5 container bg-white p-3 shadow" style={{ borderRadius: "20px" }}>
 
                     <Font family="Griffy"><h2 className="mx-3 my-4" style={{ color: "#3F000F" }}>SONY</h2></Font>
 
@@ -83,7 +80,8 @@ const Home = () => {
                 </div>
 
 
-                <div className="mt-5 container bg-white p-3 shadow" style={{ borderRadius: "20px" }}>
+                <div data-aos="fade-down-left"
+                    data-aos-duration="3000" className="mt-5 container bg-white p-3 shadow" style={{ borderRadius: "20px" }}>
                     <Font family="Griffy"><h2 className="mx-3 my-4" style={{ color: "#3F000F" }}>NIKON</h2></Font>
 
                     <Whirligig
@@ -102,7 +100,9 @@ const Home = () => {
 
                 </div>
 
-                <div className="mt-5  container bg-white p-3 mb-4 shadow" style={{ borderRadius: "20px" }}>
+                <div data-aos="flip-left"
+                    data-aos-easing="ease-out-cubic"
+                    data-aos-duration="2000" className="mt-5  container bg-white p-3 mb-4 shadow" style={{ borderRadius: "20px" }}>
                     <Font family="Griffy"><h2 className="mx-3 my-4" style={{ color: "#3F000F" }}>PANASONIC</h2></Font>
 
                     <Whirligig
@@ -127,12 +127,11 @@ const Home = () => {
             </div>
 
             <Font family="Mochiy Pop P One"><h2 className="mt-5  pb-3 text-center mb-3" style={{ color: "#25383C" }}>Product Images</h2></Font>
-            <ImageFlow></ImageFlow>
 
             <Font family="Mochiy Pop P One"><h2 className="mt-5 my-4 text-center " style={{ color: "#25383C" }}>Reviews</h2></Font>
 
             <div className="">
-                <div className="mt-5 container bg-white p-3 mb-4 shadow" style={{ borderRadius: "20px" }}>
+                <div data-aos="fade-up" data-aos-duration="2000" className="mt-5 container bg-white p-3 mb-4 shadow" style={{ borderRadius: "20px" }}>
 
 
                     <Whirligig

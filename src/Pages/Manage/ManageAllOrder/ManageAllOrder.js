@@ -99,7 +99,7 @@ const ManageAllOrder = () => {
                                     <tr>
                                         <th scope="row">*</th>
                                         <td>{order?.name}</td>
-                                        <td><ul>{order?.order?.map(order => <li> {order.orderName} <span className="fw-bold">(Qty={order?.quantity})</span> </li>)}</ul></td>
+                                        <td><ul>{order?.order?.map(order => <li key={order?._id}> {order.orderName} <span className="fw-bold">(Qty={order?.quantity})</span> </li>)}</ul></td>
                                         <td>{order?.totalPrice} TK</td>
                                         <td>{order?.email}</td>
                                         <td>{order?.phone}</td>
@@ -112,10 +112,10 @@ const ManageAllOrder = () => {
                                                 <i className="me-1 fas fa-truck text-info fs-6"></i>
                                             )}
                                             {order?.orderStatus === "Delivered" && (
-                                                <i class="me-1 fas fa-smile-wink fs-5 text-warning"></i>
+                                                <i className="me-1 fas fa-smile-wink fs-5 text-warning"></i>
                                             )}
                                             {order?.orderStatus === "Approved" && (
-                                                <i class="me-1 fas fa-check-circle fs-5 text-success"></i>
+                                                <i className="me-1 fas fa-check-circle fs-5 text-success"></i>
                                             )}
                                             {order?.orderStatus}{" "}
                                         </td>

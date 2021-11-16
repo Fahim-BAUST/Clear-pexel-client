@@ -114,8 +114,11 @@ const PlaceOrder = () => {
                             <button onClick={() => handleDeleteAll(user?.email)} type="button" className="btn btn-danger fw-bold"><i className="fas fa-broom"></i>Clear?</button>
                         </div>
 
-                        {prod.map(product => <div
-                            className="row d-flex align-items-center ">
+                        {prod.map(product => <div data-aos="zoom-out-up"
+                            data-aos-duration="1200"
+                            className="row d-flex align-items-center "
+                            key={product?._id}
+                        >
                             <div className=" text-center col">
                                 <img className="img-fluid w-50" src={product?.image} alt="" />
                             </div>
@@ -146,46 +149,50 @@ const PlaceOrder = () => {
                         </div>)}
                         <br />
                         <Divider></Divider>
-                        <div className="row d-flex align-items-center justify-content-around ">
+                        <div data-aos="flip-left"
+                            data-aos-easing="ease-out-cubic"
+                            data-aos-duration="1200">
+                            <div className="row d-flex align-items-center justify-content-around ">
 
-                            <div className="col text-center ">
-                                <p className=" fw-bold mt-3">Home Delivery?</p>
-                            </div>
-                            <div className="col text-center ">
-                                <input style={{ border: "2px solid tomato" }} onChange={handleClickedChange} className="form-check-input " type="checkbox" />
-                            </div>
-                        </div>
-
-                        <div className="row d-flex align-items-center justify-content-around">
-                            <div className=" text-center  col">
-                                <p className=" fw-bold"> Shipping cost :  </p>
-                            </div>
-                            <div className=" text-center col">
-                                <p className=" fw-bold">  <span className="text-danger"> {home === true ? 150 : 50}</span> TK </p>
+                                <div className="col text-center ">
+                                    <p className=" fw-bold mt-3">Home Delivery?</p>
+                                </div>
+                                <div className="col text-center ">
+                                    <input style={{ border: "2px solid tomato" }} onChange={handleClickedChange} className="form-check-input " type="checkbox" />
+                                </div>
                             </div>
 
-                        </div>
-                        <div className="row d-flex align-items-center justify-content-around">
-                            <div className=" text-center  col">
-                                <p className=" fw-bold"> Tax (5%) :  </p>
-                            </div>
-                            <div className=" text-center col">
-                                <p className=" fw-bold">  <span className="text-danger"> {tax}</span> TK </p>
-                            </div>
+                            <div className="row d-flex align-items-center justify-content-around">
+                                <div className=" text-center  col">
+                                    <p className=" fw-bold"> Shipping cost :  </p>
+                                </div>
+                                <div className=" text-center col">
+                                    <p className=" fw-bold">  <span className="text-danger"> {home === true ? 150 : 50}</span> TK </p>
+                                </div>
 
-                        </div>
-                        <div className="row d-flex align-items-center justify-content-around">
-                            <div className=" text-center col">
-                                <Font family="Mochiy Pop One">
-
-                                    <p className="text-center"> ToTall Cost : </p>
-                                </Font>
                             </div>
-                            <div className=" text-center col">
-                                <Font family="Mochiy Pop One">
+                            <div className="row d-flex align-items-center justify-content-around">
+                                <div className=" text-center  col">
+                                    <p className=" fw-bold"> Tax (5%) :  </p>
+                                </div>
+                                <div className=" text-center col">
+                                    <p className=" fw-bold">  <span className="text-danger"> {tax}</span> TK </p>
+                                </div>
 
-                                    <p className="text-center"><span className="text-danger"> {total}</span> TK </p>
-                                </Font>
+                            </div>
+                            <div className="row d-flex align-items-center justify-content-around">
+                                <div className=" text-center col">
+                                    <Font family="Mochiy Pop One">
+
+                                        <p className="text-center"> ToTall Cost : </p>
+                                    </Font>
+                                </div>
+                                <div className=" text-center col">
+                                    <Font family="Mochiy Pop One">
+
+                                        <p className="text-center"><span className="text-danger"> {total}</span> TK </p>
+                                    </Font>
+                                </div>
                             </div>
                         </div>
 

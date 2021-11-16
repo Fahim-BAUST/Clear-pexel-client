@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Rating, TextField, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Rating, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 
 import '../../Home/Home/Home.css'
@@ -55,7 +55,10 @@ const Product = (props) => {
 
     }
     return (
-        <div>
+        <div data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+        >
             <Card className="service-card" style={{ border: "3px solid #E0FFFF" }}>
                 {offfer && <Typography style={{ position: "absolute", padding: "2px 30px 2px 0 ", marginTop: 15, color: "white", backgroundColor: "#c29d59" }} gutterBottom variant="h5" component="div">
                     {offfer}% OFF
@@ -73,7 +76,7 @@ const Product = (props) => {
 
                     <Typography className="mt-2 mb-1" variant="body2" color="text.secondary">
                         <ul>
-                            {desc?.map(description => <li>{description}</li>)}
+                            {desc?.map(description => <li key={description}>{description}</li>)}
                         </ul>
 
                     </Typography>

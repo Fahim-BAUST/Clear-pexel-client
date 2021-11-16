@@ -53,7 +53,8 @@ const Products = () => {
                     {displayProducts.length === 0 ? <Box sx={{ width: '100%' }}><LinearProgress color="secondary" /></Box>
                         :
                         displayProducts.map(product => <Grid
-                            className="grid-responsive" item xs={12} sm={4} md={4} >
+                            className="grid-responsive" item xs={12} sm={4} md={4}
+                            key={product?._id}>
                             <Product product={product} key={product._id}></Product>
                         </Grid>)
                     }

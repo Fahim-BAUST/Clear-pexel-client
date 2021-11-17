@@ -76,10 +76,10 @@ const ProductsDetails = () => {
 
             <div className="container">
                 <div className="row d-flex align-items-center">
-                    <div className="col">
+                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <img className="img-fluid w-100" src={products.image} alt="" />
                     </div>
-                    <div className="col">
+                    <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <Typography gutterBottom variant="h3" component="div" style={{ color: "#3F000F" }}>
                             {products.name}
                         </Typography>
@@ -128,7 +128,7 @@ const ProductsDetails = () => {
                     <div className="col">
                         <h2 style={{ color: "#3F000F" }}>Description</h2>
                         <Typography
-                            style={{ marginBottom: "15px" }}
+                            style={{ marginBottom: "15px", textAlign: "justify" }}
                             sx={{ fontFamily: 'default' }}
                             variant="body1" >
                             {products?.moreDetails}

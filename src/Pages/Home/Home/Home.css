@@ -89,3 +89,39 @@
   }
   
 }
+
+.card:hover{
+  transform: scale(1.05) ;
+  color:rgb(63, 26, 26);
+  background-color:#E0FFFF;
+  overflow: hidden;
+  transition: transform 3s , color 3s , background-color 3s,border-radius 3s;
+  border-radius: 30px;
+}
+ .product-card:hover{
+  transform: scale(1.05) ;
+  color:rgb(63, 26, 26);
+  background-color:#E0FFFF;
+  overflow: hidden;
+  transition: transform 2s , color 3s , background-color 3s;
+  
+
+ }
+
+ .product-cart:hover{
+  transform: scale(1.2) ;
+  color:rgb(255, 255, 255);
+  background-color:#570808;
+  overflow: hidden;
+  transition:  color 3s , background-color 3s;
+  font-weight: bold;
+  border-radius: 30px;
+
+ }
+
+ .order-cart:hover{
+  background-color:#dbdbdb;
+
+
+ }
+

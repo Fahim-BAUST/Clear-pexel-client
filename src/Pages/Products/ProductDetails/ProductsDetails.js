@@ -1,4 +1,4 @@
-import { Button, Rating, Typography } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, LinearProgress, Paper, Rating, Slide, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
@@ -11,9 +11,22 @@ const ProductsDetails = () => {
     const { id } = useParams();
     const { user } = useAuth();
     const [description, setDescription] = useState([]);
-
     const [quantity, setQuantity] = useState(1)
     const [products, setProducts] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const [wrong, setWrong] = React.useState(false);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setWrong(false);
+    };
+
+
+
     const url = `https://gentle-fortress-91581.herokuapp.com/products/${id}`;
     useEffect(() => {
         fetch(url)
@@ -48,7 +61,10 @@ const ProductsDetails = () => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
-                    alert('Product added to cart Successfully');
+                    setOpen(true);
+                } else {
+
+                    setWrong(true);
                 }
             })
 
@@ -74,6 +90,25 @@ const ProductsDetails = () => {
         <div>
             <Header></Header>
 
+            {open === true && <Snackbar
+                open={open}
+                autoHideDuration={1500}
+                onClose={handleClose}
+
+            >
+                <Alert variant="filled" severity="success">Successfully Done</Alert>
+
+            </Snackbar>}
+            {
+                wrong === true && <Snackbar
+                    open={open}
+                    autoHideDuration={1500}
+                    onClose={handleClose}
+
+                >
+
+                    <Alert variant="filled" severity="warning">Something Wrong!</Alert>
+                </Snackbar>}
             <div className="container">
                 <div className="row d-flex align-items-center">
                     <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">

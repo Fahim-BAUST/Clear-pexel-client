@@ -85,6 +85,9 @@ const useFirebase = () => {
         fetch(`https://gentle-fortress-91581.herokuapp.com/user/${user.email}`)
             .then(res => res.json())
             .then(data => setAdmin(data.admin))
+            .catch(error => {
+
+            })
     }, [user.email])
 
     const logout = () => {
@@ -107,6 +110,9 @@ const useFirebase = () => {
             },
             body: JSON.stringify(user)
         }).then()
+            .catch(error => {
+
+            })
 
     }
 

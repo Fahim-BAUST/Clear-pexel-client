@@ -1,63 +1,131 @@
-import { LinearProgress, Typography } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Paper, Slide, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
 
-
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 const ManageAllOrder = () => {
     const [orders, setOrders] = useState([]);
+
+    const [open, setOpen] = React.useState(false);
+    const [wrong, setWrong] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+    const [deleteId, setDeleteId] = React.useState(null);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+        setWrong(false);
+    };
     useEffect(() => {
         fetch("https://gentle-fortress-91581.herokuapp.com/allOrders")
             .then((res) => res.json())
-            .then((data) => setOrders(data));
+            .then((data) => setOrders(data))
+            .catch(error => {
+                setWrong(true);
+            });
     }, [orders]);
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+    const handleOpenModal = (id) => {
+        setOpenModal(true);
+        setDeleteId(id);
+    };
 
     const handleUpdateclick = (id, status) => {
         const data = { status: status };
-        const proceed = window.confirm("Are you sure, You want to Approve?");
-        if (proceed) {
-            const url = `https://gentle-fortress-91581.herokuapp.com/updateStatus/${id}`;
-            fetch(url, {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.modifiedCount === 1) {
-                        alert("Successfully Updated ");
-                        setOrders(orders);
-                    } else {
-                        alert("Update Failed.");
-                    }
-                });
-        }
+
+        const url = `https://gentle-fortress-91581.herokuapp.com/updateStatus/${id}`;
+        fetch(url, {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.modifiedCount === 1) {
+                    setOpen(true);
+                    setOrders(orders);
+                } else {
+                    setWrong(true);
+                }
+            });
+
     };
 
-    const handleDeleteclick = (id) => {
-        const proceed = window.confirm("Are you sure, You want to delete?");
-        if (proceed) {
-            const url = `https://gentle-fortress-91581.herokuapp.com/allOrders/${id}`;
-            fetch(url, {
-                method: "DELETE",
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.deletedCount === 1) {
-                        alert("Successfully deleted ");
-                        const remainingOrders = orders.filter((order) => order?._id !== id);
-                        setOrders(remainingOrders);
-                    } else {
-                        alert("No documents matched the query. Deleted 0 documents.");
-                    }
-                });
-        }
+    const handleDeleteModal = (id) => {
+
+        const url = `https://gentle-fortress-91581.herokuapp.com/allOrders/${id}`;
+        fetch(url, {
+            method: "DELETE",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.deletedCount === 1) {
+                    setOpen(true);
+                    setOpenModal(false);
+                    const remainingOrders = orders.filter((order) => order?._id !== id);
+                    setOrders(remainingOrders);
+                } else {
+                    setOpenModal(false);
+                    setWrong(true);
+                }
+            });
+
     };
     return (
         <div>
-            <div className="table-responsive">
+            <Dialog
+                open={openModal}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseModal}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle sx={{ fontWeight: "bold", backgroundColor: "#98FB98" }}>{"Warning!!!"}</DialogTitle>
+                <DialogContent sx={{ backgroundColor: "#98FB98" }}>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{ backgroundColor: "#98FB98" }}>
+                    <Button sx={{ fontWeight: "bold" }} onClick={() => handleDeleteModal(deleteId)}>delete</Button>
+                    <Button sx={{ fontWeight: "bold" }} onClick={handleCloseModal}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
+
+            {open === true && <Snackbar
+                open={open}
+                autoHideDuration={1500}
+                onClose={handleClose}
+
+            >
+                <Alert variant="filled" severity="success">Successfully Done</Alert>
+
+            </Snackbar>}
+            {
+                wrong === true && <Snackbar
+                    open={open}
+                    autoHideDuration={1500}
+                    onClose={handleClose}
+
+                >
+
+                    <Alert variant="filled" severity="warning">Something Wrong!</Alert>
+                </Snackbar>}
+
+
+            <TableContainer component={Paper}>
+
                 <Font family="Yuji Syuku">
                     <Typography
                         sx={{
@@ -71,43 +139,47 @@ const ManageAllOrder = () => {
                         }}
                         variant="h3"
                     >
-                        ALL Order
+                        Your Order
                     </Typography>
-                    <table className="table container table-warning  table-hover">
-                        <thead className="table-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name: </th>
-                                <th scope="col">Order item: </th>
+                    <Table aria-label="simple table">
 
-                                <th scope="col">Price: </th>
+                        <TableHead>
+                            <TableRow sx={{ backgroundColor: "dimgray" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Name</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Order Item</TableCell>
 
-                                <th scope="col">Email: </th>
-                                <th scope="col">Phone: </th>
-                                <th scope="col">Status: </th>
-                                <th scope="col">Change Status</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Price</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Email</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Phone</TableCell>
+
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Status</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Change Status</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Delete</TableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                             {orders.length === 0 ? (
                                 <Box sx={{ width: "100%" }}>
                                     <LinearProgress color="secondary" />
                                 </Box>
-                            ) : (
-                                orders.map((order) => (
-                                    <tr>
-                                        <th scope="row">*</th>
-                                        <td>{order?.name}</td>
-                                        <td><ul>{order?.order?.map(order => <li key={order?._id}> {order.orderName} <span className="fw-bold">(Qty={order?.quantity})</span> </li>)}</ul></td>
-                                        <td>{order?.totalPrice} TK</td>
-                                        <td>{order?.email}</td>
-                                        <td>{order?.phone}</td>
+                            ) :
 
-                                        <td>
-                                            {order?.orderStatus === "Pending" && (
-                                                <i className="me-1 fas fa-spinner text-warning fw-bolder fs-6"></i>
-                                            )}
+                                orders.map((order) => (
+                                    <TableRow
+                                        key={order._id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        className="order-cart"
+                                    >
+                                        <TableCell >{order?.name}</TableCell>
+                                        <TableCell ><ul>{order?.order?.map(order => <li key={order?._id}> {order.orderName} <span className="fw-bold">(Qty={order?.quantity})</span> </li>)}</ul></TableCell>
+
+                                        <TableCell > {order?.totalPrice}$</TableCell>
+                                        <TableCell > {order?.email}</TableCell>
+                                        <TableCell > {order?.phone}</TableCell>
+                                        <TableCell align="center">{order?.orderStatus === "Pending" && (
+                                            <i className="me-1 fas fa-spinner text-warning fw-bolder fs-6"></i>
+                                        )}
                                             {order?.orderStatus === "Shipped" && (
                                                 <i className="me-1 fas fa-truck text-info fs-6"></i>
                                             )}
@@ -117,89 +189,86 @@ const ManageAllOrder = () => {
                                             {order?.orderStatus === "Approved" && (
                                                 <i className="me-1 fas fa-check-circle fs-5 text-success"></i>
                                             )}
-                                            {order?.orderStatus}{" "}
-                                        </td>
+                                            {order?.orderStatus}{" "}</TableCell>
 
-                                        <td className="text-center">
-                                            <div className="dropdown">
-                                                <button
-                                                    className="btn btn-outline-dark dropdown-toggle btn-sm"
-                                                    type="button"
-                                                    id="dropdownMenu2"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                >
-                                                    <i className="fas fa-tasks"></i> manage
-                                                </button>
-                                                <ul
-                                                    className="dropdown-menu"
-                                                    aria-labelledby="dropdownMenu2"
-                                                >
-                                                    <li>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleUpdateclick(order._id, "Approved")
-                                                            }
-                                                            className="dropdown-item"
-                                                            type="button"
-                                                        >
-                                                            Approved
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleUpdateclick(order._id, "Pending")
-                                                            }
-                                                            className="dropdown-item"
-                                                            type="button"
-                                                        >
-                                                            Pending
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleUpdateclick(order._id, "Shipped")
-                                                            }
-                                                            className="dropdown-item"
-                                                            type="button"
-                                                        >
-                                                            Shipped
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleUpdateclick(order._id, "Delivered")
-                                                            }
-                                                            className="dropdown-item"
-                                                            type="button"
-                                                        >
-                                                            Delivered
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        <td className="text-center">
+                                        <TableCell align="center"> <div className="dropdown">
                                             <button
-                                                onClick={() => handleDeleteclick(order._id)}
-                                                className="ms-1 border-0"
+                                                className="btn btn-outline-dark dropdown-toggle btn-sm"
+                                                type="button"
+                                                id="dropdownMenu2"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
                                             >
-                                                <i className="fas fa-trash text-danger"></i>
+                                                <i className="fas fa-tasks"></i> manage
                                             </button>
-                                        </td>
-                                    </tr>
+                                            <ul
+                                                className="dropdown-menu"
+                                                aria-labelledby="dropdownMenu2"
+                                            >
+                                                <li>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleUpdateclick(order._id, "Approved")
+                                                        }
+                                                        className="dropdown-item"
+                                                        type="button"
+                                                    >
+                                                        Approved
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleUpdateclick(order._id, "Pending")
+                                                        }
+                                                        className="dropdown-item"
+                                                        type="button"
+                                                    >
+                                                        Pending
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleUpdateclick(order._id, "Shipped")
+                                                        }
+                                                        className="dropdown-item"
+                                                        type="button"
+                                                    >
+                                                        Shipped
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleUpdateclick(order._id, "Delivered")
+                                                        }
+                                                        className="dropdown-item"
+                                                        type="button"
+                                                    >
+                                                        Delivered
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div></TableCell>
+                                        <TableCell align="center"> <button
+                                            onClick={() => handleOpenModal(order._id)}
+                                            className="ms-1 border-0"
+                                        >
+                                            <i className="fas fa-trash text-danger"></i>
+                                        </button></TableCell>
+
+
+                                    </TableRow>
                                 ))
-                            )}
-                        </tbody>
-                    </table>
+                            }
+                        </TableBody>
+
+                    </Table>
                 </Font>
-            </div>
+            </TableContainer >
 
-        </div >
-
+        </div>
     );
 };
 

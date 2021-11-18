@@ -1,9 +1,14 @@
-import { Divider, Typography } from '@mui/material';
+import { Divider, Typography, Alert, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slide } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../Hooks/useAuth';
 import Header from '../../Shared/Header/Header';
 import Font from 'react-font';
+import CartItem from './CartItem/CartItem';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const PlaceOrder = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -12,9 +17,26 @@ const PlaceOrder = () => {
     const [tax, setTax] = useState(0);
     const [hDelete, sethDelete] = useState(false);
     const [home, setHome] = useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [wrong, setWrong] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+    const [deleteId, setDeleteId] = React.useState(null);
+
+
     const { user } = useAuth();
     const email = user.email;
     let sum = 0;
+
+
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setWrong(false);
+    };
 
     const url = `https://gentle-fortress-91581.herokuapp.com/addToCart/cart/${email}`;
     useEffect(() => {
@@ -34,43 +56,54 @@ const PlaceOrder = () => {
 
     }, [prod, hDelete]);
 
-    const handleDeleteClick = (id) => {
-        const proceed = window.confirm("Are you sure, You want to delete?");
-        if (proceed) {
-            const url = `https://gentle-fortress-91581.herokuapp.com/cart/${id}`;
-            fetch(url, {
-                method: "DELETE",
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.deletedCount === 1) {
-                        alert("Successfully deleted ");
-                        const remainingOrders = prod.filter((order) => order?._id !== id);
-                        setProd(remainingOrders);
-                    } else {
-                        alert("No documents matched the query. Deleted 0 documents.");
-                    }
-                });
-        }
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+    const handleOpenModal = (id) => {
+        setOpenModal(true);
+        setDeleteId(id);
+    };
+
+
+
+    const handleDeleteModal = (id) => {
+        setOpenModal(false);
+        const url = `https://gentle-fortress-91581.herokuapp.com/cart/${id}`;
+        fetch(url, {
+            method: "DELETE",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.deletedCount === 1) {
+                    setOpen(true);
+                    const remainingOrders = prod.filter((order) => order?._id !== id);
+                    setProd(remainingOrders);
+
+                } else {
+                    setWrong(true);
+                }
+            });
+
     };
 
     const handleDeleteAll = (email) => {
-        const proceed = window.confirm("Are you sure, You want to delete?");
-        if (proceed) {
-            const url = `https://gentle-fortress-91581.herokuapp.com/cartRemove/${email}`;
-            fetch(url, {
-                method: "DELETE",
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.acknowledged === true) {
-                        alert("Successfully deleted ");
-                        sethDelete(true);
-                    } else {
-                        alert("No documents matched the query. Deleted 0 documents.");
-                    }
-                });
-        }
+        setOpenModal(false);
+
+        const url = `https://gentle-fortress-91581.herokuapp.com/cartRemove/${email}`;
+        fetch(url, {
+            method: "DELETE",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.acknowledged === true) {
+                    setOpen(true);
+                    setOpenModal(false);
+                    sethDelete(true);
+                } else {
+                    setWrong(true);
+                }
+            });
+
     };
 
     const onSubmit = data => {
@@ -88,8 +121,10 @@ const PlaceOrder = () => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
-                    alert('Order processed Successfully');
+                    setOpen(true);
                     reset();
+                } else {
+                    setWrong(true);
                 }
             })
     };
@@ -102,56 +137,66 @@ const PlaceOrder = () => {
         <div>
 
             <Header></Header>
+
             <div className="container mt-3">
+                <Dialog
+                    open={openModal}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleCloseModal}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle sx={{ fontWeight: "bold", backgroundColor: "#98FB98" }}>{"Warning!!!"}</DialogTitle>
+                    <DialogContent sx={{ backgroundColor: "#98FB98" }}>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Are you sure you want to delete?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ backgroundColor: "#98FB98" }}>
+                        <Button sx={{ fontWeight: "bold" }} onClick={() => handleDeleteModal(deleteId)}>Clear one</Button>
+                        <Button sx={{ fontWeight: "bold" }} onClick={() => handleDeleteAll(user?.email)}> Clear All</Button>
+                        <Button sx={{ fontWeight: "bold" }} onClick={handleCloseModal}>Close</Button>
+                    </DialogActions>
+                </Dialog>
+
+
+                {open === true && <Snackbar
+                    open={open}
+                    autoHideDuration={1500}
+                    onClose={handleClose}
+
+                >
+                    <Alert variant="filled" severity="success">Successfully Done</Alert>
+
+                </Snackbar>}
+                {
+                    wrong === true && <Snackbar
+                        open={open}
+                        autoHideDuration={1500}
+                        onClose={handleClose}
+
+                    >
+
+                        <Alert variant="filled" severity="warning">Something Wrong!</Alert>
+                    </Snackbar>}
                 <div className="row">
 
                     <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
                         <Font family="Mochiy Pop One">
                             <Typography className="text-center" sx={{ fontWeight: "bold", color: "#3F000F", marginBottom: 5, fontSize: "2em" }} ><span >Your Orders</span> </Typography>
                         </Font>
-                        <div className="text-end">
 
-                            <button onClick={() => handleDeleteAll(user?.email)} type="button" className="btn btn-danger fw-bold"><i className="fas fa-broom"></i>Clear?</button>
-                        </div>
-
-                        {prod.map(product => <div data-aos="zoom-out-up"
-                            data-aos-duration="1200"
-                            className="row d-flex align-items-center "
-                            key={product?._id}
-                        >
-                            <div className=" text-center col">
-                                <img className="img-fluid w-50" src={product?.image} alt="" />
-                            </div>
-                            <div className=" text-center col">
-                                <p>{product?.orderName}</p>
-                            </div>
-
-                            <div className=" text-center col">
-                                <p>{product?.quantity}</p>
-                            </div>
-
-                            <div className=" text-center col">
-                                <p>{(product?.quantity) * (product?.price)}</p>
-                            </div>
-
-
-                            <div className=" text-center col">
-                                <button
-                                    onClick={() => handleDeleteClick(product?._id)}
-                                    className="ms-1 border-0"
-                                >
-                                    <i className="fas fa-trash text-danger"></i>
-                                </button>
-                            </div>
-                            <Divider></Divider>
-
-
-                        </div>)}
+                        {prod.map(product => <CartItem
+                            product={product}
+                            handleCloseModal={handleCloseModal}
+                            handleDeleteModal={handleDeleteModal}
+                            handleOpenModal={handleOpenModal}
+                            openModal={openModal}
+                        ></CartItem>
+                        )}
                         <br />
                         <Divider></Divider>
-                        <div data-aos="flip-left"
-                            data-aos-easing="ease-out-cubic"
-                            data-aos-duration="1200">
+                        <div >
                             <div className="row d-flex align-items-center justify-content-around ">
 
                                 <div className="col text-center ">
@@ -213,7 +258,7 @@ const PlaceOrder = () => {
                             <input className="form-control" aria-label="Username" aria-describedby="basic-addon1" defaultValue={user.displayName} {...register("name")} />
                             <br />
 
-                            <input className="form-control" aria-label="Username" aria-describedby="basic-addon1" defaultValue={user.email} {...register("email", { required: true })} />
+                            <input readOnly className="form-control" aria-label="Username" aria-describedby="basic-addon1" value={user.email} {...register("email", { required: true })} />
                             <br />
                             {errors.email && <span className="error">This field is required</span>}
 

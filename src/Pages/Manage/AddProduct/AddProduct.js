@@ -1,10 +1,21 @@
+import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 import Font from 'react-font';
 import { useForm } from 'react-hook-form';
 
 const AddProduct = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const [open, setOpen] = React.useState(false);
+    const [wrong, setWrong] = React.useState(false);
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setWrong(false);
+    };
     const onSubmit = data => {
 
         fetch('https://gentle-fortress-91581.herokuapp.com/addProduct', {
@@ -17,16 +28,35 @@ const AddProduct = () => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
-                    alert("Successfully Added");
+                    setOpen(true);
                     reset();
                 } else {
-                    alert("Failed");
+                    setWrong(true);
                 }
             })
 
     }
     return (
         <div>
+            {open === true && <Snackbar
+                open={open}
+                autoHideDuration={1500}
+                onClose={handleClose}
+
+            >
+                <Alert variant="filled" severity="success">Successfully Done</Alert>
+
+            </Snackbar>}
+            {
+                wrong === true && <Snackbar
+                    open={open}
+                    autoHideDuration={1500}
+                    onClose={handleClose}
+
+                >
+
+                    <Alert variant="filled" severity="warning">Something Wrong!</Alert>
+                </Snackbar>}
             <div>
                 <Font family="Mochiy Pop One">
                     <h1 style={{ textAlign: "center", paddingTop: 3, marginTop: 20, marginBottom: 40, color: "#3F000F", fontSize: "40px" }}>Add Product</h1>

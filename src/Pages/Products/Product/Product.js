@@ -1,15 +1,17 @@
-import { Button, Card, CardContent, CardMedia, Rating, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Rating, Snackbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 
-import '../../Home/Home/Home.css'
 
 const Product = (props) => {
-    const { image, name, rating, details, offfer, cost, _id } = props.product
+    const { image, name, rating, details, offfer, cost, _id } = props.product;
+
     const { user } = useAuth();
 
     const [quantity, setQuantity] = useState(1);
+
+
 
     const desc = details?.split("=");
 
@@ -33,8 +35,12 @@ const Product = (props) => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
-                    alert('Product added to cart Successfully');
+                    props.open(true)
+                } else {
+                    props.wrong(true)
                 }
+            }).catch(error => {
+                props.setWrong(true);
             })
 
     }
@@ -54,35 +60,41 @@ const Product = (props) => {
 
 
     }
+
+
+
     return (
         <div data-aos="flip-left"
             data-aos-easing="ease-out-cubic"
             data-aos-duration="2000"
         >
-            <Card className="service-card" style={{ border: "3px solid #E0FFFF" }}>
-                {offfer && <Typography style={{ position: "absolute", padding: "2px 30px 2px 0 ", marginTop: 15, color: "white", backgroundColor: "#c29d59" }} gutterBottom variant="h5" component="div">
-                    {offfer}% OFF
-                </Typography>}
 
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image={image}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {name}
-                    </Typography>
+            <Card className="service-card product-card" style={{ border: "3px solid #E0FFFF" }}>
+                <Link className="text-decoration-none" to={`/productDetails/${_id}`}>
+                    {offfer && <Typography style={{ position: "absolute", padding: "2px 30px 2px 0 ", marginTop: 15, color: "white", backgroundColor: "#c29d59" }} gutterBottom variant="h5" component="div">
+                        {offfer}% OFF
+                    </Typography>}
 
-                    <Typography className="mt-2 mb-1" variant="body2" color="text.secondary">
-                        <ul>
-                            {desc?.map(description => <li key={description}>{description}</li>)}
-                        </ul>
+                    <CardMedia
+                        component="img"
+                        height="140"
+                        image={image}
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            {name}
+                        </Typography>
 
-                    </Typography>
-                    <Rating name="read-only" value={rating} readOnly />
+                        <Typography className="mt-2 mb-1" variant="body2" color="text.secondary">
+                            <ul>
+                                {desc?.map(description => <li key={description}>{description}</li>)}
+                            </ul>
 
-                </CardContent>
+                        </Typography>
+                        <Rating name="read-only" value={rating} readOnly />
+
+                    </CardContent>
+                </Link>
                 <div className="d-flex justify-content-between container mb-2 align-items-center">
 
                     <Typography

@@ -1,4 +1,4 @@
-import { Grid, LinearProgress } from '@mui/material';
+import { Alert, Grid, LinearProgress, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
@@ -8,6 +8,17 @@ import Product from './Product/Product';
 const Products = () => {
     const [products, setProducts] = useState([])
     const [displayProducts, setDisplayProducts] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const [wrong, setWrong] = React.useState(false);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setWrong(false);
+    };
 
     const url = 'https://gentle-fortress-91581.herokuapp.com/products';
     useEffect(() => {
@@ -16,6 +27,8 @@ const Products = () => {
             .then(data => {
                 setProducts(data);
                 setDisplayProducts(data);
+            }).catch(error => {
+                setWrong(true);
             })
 
     }, [])
@@ -28,6 +41,7 @@ const Products = () => {
 
         setDisplayProducts(matchedProducts);
     }
+
     return (
         <div>
             <Header></Header>
@@ -40,8 +54,25 @@ const Products = () => {
                 <input type="text" className="form-control shadow-lg text-center" onChange={handleSearch}
                     placeholder="Search Product" aria-label="Recipient's username" aria-describedby="basic-addon2" style={{ border: "1px solid #3F000F" }} />
             </div>
+            {open === true && <Snackbar
+                open={open}
+                autoHideDuration={1000}
+                onClose={handleClose}
 
+            >
+                <Alert variant="filled" severity="success">Successfully done!</Alert>
 
+            </Snackbar>}
+            {
+                wrong === true && <Snackbar
+                    open={open}
+                    autoHideDuration={1000}
+                    onClose={handleClose}
+
+                >
+
+                    <Alert severity="error" variant="filled">something Wrong!</Alert>
+                </Snackbar>}
 
             <Box className="container" sx={{ flexGrow: 1, mb: 5 }}>
                 <Font family="Mochiy Pop One">
@@ -54,14 +85,15 @@ const Products = () => {
                         :
                         displayProducts.map(product => <Grid
                             className="grid-responsive" item xs={12} sm={4} md={4}
-                            key={product?._id}>
-                            <Product product={product} key={product._id}></Product>
+                            key={product?._id}
+                            setWrong={setWrong}>
+                            <Product product={product} key={product._id} open={setOpen} wrong={setWrong}></Product>
                         </Grid>)
                     }
                 </Grid>
             </Box>
 
-        </div>
+        </div >
     );
 };
 

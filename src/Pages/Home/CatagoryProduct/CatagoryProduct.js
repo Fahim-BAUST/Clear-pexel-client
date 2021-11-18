@@ -29,8 +29,12 @@ const CatagoryProduct = (props) => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
-                    alert('Product added to cart Successfully');
+                    props.open(true)
+                } else {
+                    props.wrong(true)
                 }
+            }).catch(error => {
+                props.wrong(true);
             })
 
     }
@@ -53,9 +57,9 @@ const CatagoryProduct = (props) => {
     return (
         <div>
             <div className="card  text-center ">
-                <div className="card-body">
+                <div className="card-body flex-column d-flex justify-content-center align-items-center">
                     <img src={image} className="
-                                     img-fluid text-center" alt="..." />
+                                     img-fluid text-center rounded" alt="..." />
                     <p className="fw-bold mt-2">{name}</p>
 
                     <Rating className="rating" name="half-rating-read" value={rating} precision={0.5} readOnly />

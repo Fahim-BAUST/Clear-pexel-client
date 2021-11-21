@@ -139,7 +139,7 @@ const ManageAllOrder = () => {
                         }}
                         variant="h3"
                     >
-                        Your Order
+                        Manage all Order
                     </Typography>
                     <Table aria-label="simple table">
 

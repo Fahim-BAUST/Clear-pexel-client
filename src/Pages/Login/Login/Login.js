@@ -1,14 +1,15 @@
-import { Alert, Button, Container, Grid, LinearProgress, TextField } from '@mui/material';
+import { Button, Container, Grid, LinearProgress, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import Font from 'react-font';
 import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 import Header from '../../Shared/Header/Header';
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({});
-    const { user, loginUser, isLoading, authError, signInWithGoogle } = useAuth();
+    const { user, loginUser, isLoading, signInWithGoogle } = useAuth();
 
     const location = useLocation();
     const history = useHistory();
@@ -26,6 +27,14 @@ const Login = () => {
     }
     const handleGoogleSignIn = () => {
         signInWithGoogle(location, history)
+    }
+
+    const loginTrue = () => {
+        Swal.fire(
+            `Success `,
+            `Welcome ${user.displayName} `,
+            'success'
+        )
     }
     return (
         <Box>
@@ -52,8 +61,7 @@ const Login = () => {
                                 </div>
 
 
-                                {user?.email && <Alert severity="success">Login successfully!</Alert>}
-                                {authError && <Alert severity="error">{authError}</Alert>}
+                                {user?.email && loginTrue()}
 
                                 <Button sx={{ mt: 2 }} type="submit" variant="contained">Login</Button>
                                 <p className="mt-2" style={{ fontSize: "15px" }}>NewUser? <NavLink className="text-decoration-none fw-bold" to="/register">Register</NavLink></p>

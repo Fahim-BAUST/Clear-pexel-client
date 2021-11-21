@@ -1,9 +1,9 @@
-import { Alert, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const MakeAdmin = () => {
     const [email, setEmail] = useState('');
-    const [done, setDone] = useState(false);
 
     const handleOnBlur = e => {
         setEmail(e.target.value);
@@ -20,8 +20,17 @@ const MakeAdmin = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.modifiedCount) {
-                    console.log(data);
-                    setDone(true);
+                    Swal.fire(
+                        `Success `,
+                        `$$-${email}-$$ is now a ADMIN `,
+                        'success'
+                    )
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             })
 
@@ -43,7 +52,7 @@ const MakeAdmin = () => {
                 <br />
                 <Button type="submit" color="success" variant="contained">Set Admin</Button>
             </form>
-            {done && <Alert severity="success">Made Admin successfully!</Alert>}
+
         </div>
     );
 };

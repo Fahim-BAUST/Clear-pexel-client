@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Alert, Button, Container, Grid, LinearProgress, TextField } from '@mui/material';
+import { Button, Container, Grid, LinearProgress, TextField } from '@mui/material';
 import Font from 'react-font';
 import { NavLink, useHistory } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 import { Box } from '@mui/system';
 import Header from '../../Shared/Header/Header';
+import Swal from 'sweetalert2';
 
 const Registration = () => {
-    const { user, registerUser, isLoading, authError } = useAuth();
+    const { user, registerUser, isLoading, } = useAuth();
     const [loginData, setLoginData] = useState({});
     const history = useHistory();
 
@@ -25,6 +26,13 @@ const Registration = () => {
         }
         registerUser(loginData?.email, loginData?.password, loginData?.name, history);
         e.preventDefault();
+    }
+    const loginTrue = () => {
+        Swal.fire(
+            `Success `,
+            `Welcome ${user.displayName} `,
+            'success'
+        )
     }
     return (
         <Box>
@@ -57,10 +65,7 @@ const Registration = () => {
                                 </div>
 
 
-                                {user?.email && <Alert severity="success">User Created successfully!</Alert>}
-
-                                {authError && <Alert severity="error">{authError}</Alert>}
-
+                                {user?.email && loginTrue()}
 
                                 <Button sx={{ mt: 2 }} type="submit" variant="contained">Register</Button>
                                 <p className="mt-2" style={{ fontSize: "15px" }}>already registered? <NavLink className="text-decoration-none fw-bold" to="/login">login</NavLink></p>

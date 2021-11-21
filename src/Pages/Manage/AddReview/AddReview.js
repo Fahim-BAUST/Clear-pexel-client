@@ -1,21 +1,14 @@
-import { Alert, Button, Snackbar } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
+import Swal from 'sweetalert2'
+
 const AddReview = () => {
     const [loginData, setLoginData] = useState({});
     const { user } = useAuth();
-    const [open, setOpen] = React.useState(false);
-    const [wrong, setWrong] = React.useState(false);
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
 
-        setOpen(false);
-        setWrong(false);
-    };
     const handleOnChange = e => {
         const field = e.target.name;
         const value = e.target.value;
@@ -25,49 +18,50 @@ const AddReview = () => {
     }
 
     const handleSubmit = (e) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to submit?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-        fetch('https://gentle-fortress-91581.herokuapp.com/addReview', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(loginData)
+                fetch('https://gentle-fortress-91581.herokuapp.com/addReview', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.insertedId) {
+                            Swal.fire(
+                                'Review Placed!',
+                                'Your review  has been placed.',
+                                'success'
+                            )
+
+                        } else {
+                            Swal.fire(
+                                'Cancelled',
+                                'Your review is canceled',
+                                'error'
+                            )
+                        }
+                    })
+
+            }
         })
-            .then(res => res.json())
-            .then(result => {
-                if (result.insertedId) {
-                    setOpen(true);
-
-                } else {
-                    setWrong(true);
-                }
-            }).catch(error => {
-                setWrong(true);
-            })
 
         e.preventDefault();
     }
     return (
         <div>
-            {open === true && <Snackbar
-                open={open}
-                autoHideDuration={1000}
-                onClose={handleClose}
 
-            >
-                <Alert variant="filled" severity="success">Successfully done!</Alert>
-
-            </Snackbar>}
-            {
-                wrong === true && <Snackbar
-                    open={open}
-                    autoHideDuration={1000}
-                    onClose={handleClose}
-
-                >
-
-                    <Alert severity="error" variant="filled">something Wrong!</Alert>
-                </Snackbar>}
             <form className="container" style={{ width: "350px" }} onSubmit={handleSubmit}>
                 <input readOnly name="name" type="text" className="form-control" placeholder="Enter name" aria-label="Enter name" onBlur={handleOnChange} value={user?.displayName} />
                 <input name="rating" type="text" className="form-control" placeholder="Enter Rating(1 to 5)" aria-label="" onBlur={handleOnChange} />

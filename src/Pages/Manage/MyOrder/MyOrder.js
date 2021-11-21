@@ -1,8 +1,9 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Paper, Slide, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Paper, Slide, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
 import useAuth from '../../Hooks/useAuth';
+import Swal from 'sweetalert2'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -11,19 +12,10 @@ const MyOrder = () => {
     const { user } = useAuth();
 
     const [orders, setOrders] = useState([]);
-    const [open, setOpen] = React.useState(false);
-    const [wrong, setWrong] = React.useState(false);
+
     const [openModal, setOpenModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState(null);
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-        setWrong(false);
-    };
 
 
     useEffect(() => {
@@ -32,7 +24,11 @@ const MyOrder = () => {
             .then((data) => {
                 setOrders(data);
             }).catch(error => {
-                setWrong(true);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             });;
     }, [user.email]);
 
@@ -53,13 +49,21 @@ const MyOrder = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.deletedCount === 1) {
-                    setOpen(true);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
                     setOpenModal(false);
                     const remainingOrders = orders.filter((order) => order?._id !== id);
                     setOrders(remainingOrders);
                 } else {
                     setOpenModal(false);
-                    setWrong(true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             });
 
@@ -84,26 +88,6 @@ const MyOrder = () => {
             </DialogActions>
         </Dialog>
 
-
-        {open === true && <Snackbar
-            open={open}
-            autoHideDuration={1500}
-            onClose={handleClose}
-
-        >
-            <Alert variant="filled" severity="success">Successfully Done</Alert>
-
-        </Snackbar>}
-        {
-            wrong === true && <Snackbar
-                open={open}
-                autoHideDuration={1500}
-                onClose={handleClose}
-
-            >
-
-                <Alert variant="filled" severity="warning">Something Wrong!</Alert>
-            </Snackbar>}
         <TableContainer component={Paper}>
             <Font family="Yuji Syuku">
                 <Typography

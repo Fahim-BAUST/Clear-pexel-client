@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile, signOut } from "firebase/auth";
 import initializeFirebase from '../Login/Firebase/firebase.init';
-
+import Swal from 'sweetalert2';
 
 // initialize firebase app
 initializeFirebase();
@@ -9,7 +9,6 @@ initializeFirebase();
 const useFirebase = () => {
     const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [authError, setAuthError] = useState('');
     const [admin, setAdmin] = useState(false);
 
     const auth = getAuth();
@@ -19,7 +18,6 @@ const useFirebase = () => {
         setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                setAuthError('');
                 const newUser = { email, displayName: name };
                 setUser(newUser);
                 // save user to the database 
@@ -28,12 +26,20 @@ const useFirebase = () => {
                     displayName: name
                 }).then(() => {
                 }).catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${error.message}`,
+                    })
                 });
                 history.replace('/');
             })
             .catch((error) => {
-                setAuthError(error.message);
-                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message}`,
+                })
             })
             .finally(() => setIsLoading(false));
     }
@@ -44,10 +50,15 @@ const useFirebase = () => {
             .then((userCredential) => {
                 const destination = location?.state?.from || '/';
                 history.replace(destination);
-                setAuthError('');
+
             })
             .catch((error) => {
-                setAuthError(error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message}`,
+                })
+
             })
             .finally(() => setIsLoading(false));
     }
@@ -61,10 +72,12 @@ const useFirebase = () => {
                 saveUser(user.email, user.displayName, 'PUT');
                 const destination = location?.state?.from || '/';
                 history.replace(destination);
-
-                setAuthError('');
             }).catch((error) => {
-                setAuthError(error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message}`,
+                })
             }).finally(() => setIsLoading(false));
     }
 
@@ -95,7 +108,11 @@ const useFirebase = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
         }).catch((error) => {
-            // An error happened.
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `${error.message}`,
+            })
         })
             .finally(() => setIsLoading(false));
     }
@@ -111,7 +128,11 @@ const useFirebase = () => {
             body: JSON.stringify(user)
         }).then()
             .catch(error => {
-
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message}`,
+                })
             })
 
     }
@@ -119,7 +140,6 @@ const useFirebase = () => {
     return {
         user,
         isLoading,
-        authError,
         registerUser,
         loginUser,
         signInWithGoogle,

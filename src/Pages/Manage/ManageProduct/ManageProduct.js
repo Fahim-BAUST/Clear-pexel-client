@@ -1,6 +1,7 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, LinearProgress, Paper, Slide, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
+import Swal from 'sweetalert2'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -10,19 +11,10 @@ const ManageProduct = () => {
 
     const [products, setProducts] = useState([])
 
-    const [open, setOpen] = React.useState(false);
-    const [wrong, setWrong] = React.useState(false);
+
     const [openModal, setOpenModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState(null);
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-        setWrong(false);
-    };
 
     const handleCloseModal = () => {
         setOpenModal(false);
@@ -51,13 +43,21 @@ const ManageProduct = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.deletedCount === 1) {
-                    setOpen(true);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
                     setOpenModal(false);
                     const remainingOrders = products.filter((order) => order?._id !== id);
                     setProducts(remainingOrders);
                 } else {
                     setOpenModal(false);
-                    setWrong(true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             });
 
@@ -84,25 +84,6 @@ const ManageProduct = () => {
             </Dialog>
 
 
-            {open === true && <Snackbar
-                open={open}
-                autoHideDuration={1500}
-                onClose={handleClose}
-
-            >
-                <Alert variant="filled" severity="success">Successfully Done</Alert>
-
-            </Snackbar>}
-            {
-                wrong === true && <Snackbar
-                    open={open}
-                    autoHideDuration={1500}
-                    onClose={handleClose}
-
-                >
-
-                    <Alert variant="filled" severity="warning">Something Wrong!</Alert>
-                </Snackbar>}
             <div className="container">
                 <Font family="Yuji Syuku">
                     <Typography

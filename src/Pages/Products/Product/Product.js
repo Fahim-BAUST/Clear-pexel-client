@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Rating, Snackbar, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Rating, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';

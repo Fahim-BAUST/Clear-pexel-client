@@ -1,10 +1,11 @@
-import { Divider, Typography, Alert, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slide } from '@mui/material';
+import { Divider, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slide } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../Hooks/useAuth';
 import Header from '../../Shared/Header/Header';
 import Font from 'react-font';
 import CartItem from './CartItem/CartItem';
+import Swal from 'sweetalert2'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -17,8 +18,6 @@ const PlaceOrder = () => {
     const [tax, setTax] = useState(0);
     const [hDelete, sethDelete] = useState(false);
     const [home, setHome] = useState(false);
-    const [open, setOpen] = React.useState(false);
-    const [wrong, setWrong] = React.useState(false);
     const [openModal, setOpenModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState(null);
 
@@ -26,17 +25,6 @@ const PlaceOrder = () => {
     const { user } = useAuth();
     const email = user.email;
     let sum = 0;
-
-
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-        setWrong(false);
-    };
 
     const url = `https://gentle-fortress-91581.herokuapp.com/addToCart/cart/${email}`;
     useEffect(() => {
@@ -75,12 +63,20 @@ const PlaceOrder = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.deletedCount === 1) {
-                    setOpen(true);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
                     const remainingOrders = prod.filter((order) => order?._id !== id);
                     setProd(remainingOrders);
 
                 } else {
-                    setWrong(true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             });
 
@@ -96,37 +92,83 @@ const PlaceOrder = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.acknowledged === true) {
-                    setOpen(true);
+                    let timerInterval
+                    Swal.fire({
+                        title: 'Deleting!',
+                        html: ' close in <b></b> milliseconds.',
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer')
+                        }
+                    })
                     setOpenModal(false);
                     sethDelete(true);
                 } else {
-                    setWrong(true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             });
 
     };
 
     const onSubmit = data => {
-        data.order = prod;
-        data.orderStatus = "Pending";
-        data.totalPrice = total;
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to submit?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                data.order = prod;
+                data.orderStatus = "Pending";
+                data.totalPrice = total;
 
-        fetch('https://gentle-fortress-91581.herokuapp.com/cartToOrders', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
+                fetch('https://gentle-fortress-91581.herokuapp.com/cartToOrders', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.insertedId) {
+                            Swal.fire(
+                                'Order Placed!',
+                                'Your order has been placed.',
+                                'success'
+                            )
+                            reset();
+                        } else {
+                            Swal.fire(
+                                'Cancelled',
+                                'Your order is canceled',
+                                'error'
+                            )
+                        }
+                    })
+
+            }
         })
-            .then(res => res.json())
-            .then(result => {
-                if (result.insertedId) {
-                    setOpen(true);
-                    reset();
-                } else {
-                    setWrong(true);
-                }
-            })
+
     };
 
     const handleClickedChange = e => {
@@ -159,26 +201,6 @@ const PlaceOrder = () => {
                     </DialogActions>
                 </Dialog>
 
-
-                {open === true && <Snackbar
-                    open={open}
-                    autoHideDuration={1500}
-                    onClose={handleClose}
-
-                >
-                    <Alert variant="filled" severity="success">Successfully Done</Alert>
-
-                </Snackbar>}
-                {
-                    wrong === true && <Snackbar
-                        open={open}
-                        autoHideDuration={1500}
-                        onClose={handleClose}
-
-                    >
-
-                        <Alert variant="filled" severity="warning">Something Wrong!</Alert>
-                    </Snackbar>}
                 <div className="row">
 
                     <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
@@ -188,8 +210,6 @@ const PlaceOrder = () => {
 
                         {prod.map(product => <CartItem
                             product={product}
-                            handleCloseModal={handleCloseModal}
-                            handleDeleteModal={handleDeleteModal}
                             handleOpenModal={handleOpenModal}
                             openModal={openModal}
                         ></CartItem>

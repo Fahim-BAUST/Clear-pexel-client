@@ -1,4 +1,4 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, LinearProgress, Paper, Rating, Slide, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Alert, Button, Rating, Snackbar, Typography } from '@mui/material';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';

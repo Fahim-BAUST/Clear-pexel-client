@@ -53,7 +53,7 @@ const ManageAllOrder = () => {
                 if (data.modifiedCount === 1) {
                     Swal.fire(
                         `Success `,
-                        `Status is $$-${status?.status}-$$ `,
+                        `Status is $$-${status}-$$ `,
                         'success'
                     )
                     setOrders(orders);

@@ -2,6 +2,7 @@ import { Alert, Grid, LinearProgress, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
+import Swal from 'sweetalert2';
 import Header from '../Shared/Header/Header';
 import Product from './Product/Product';
 
@@ -27,8 +28,12 @@ const Products = () => {
             .then(data => {
                 setProducts(data);
                 setDisplayProducts(data);
-            }).catch(error => {
-                setWrong(true);
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
             })
 
     }, [])

@@ -40,6 +40,12 @@ const PlaceOrder = () => {
                 setTax(tax);
                 setTotal(sum + shipping + tax);
 
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
             })
 
     }, [prod, hDelete]);
@@ -78,8 +84,13 @@ const PlaceOrder = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
-
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
     };
 
     const handleDeleteAll = (email) => {
@@ -122,7 +133,13 @@ const PlaceOrder = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     };
 
@@ -164,6 +181,12 @@ const PlaceOrder = () => {
                                 'error'
                             )
                         }
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                        })
                     })
 
             }

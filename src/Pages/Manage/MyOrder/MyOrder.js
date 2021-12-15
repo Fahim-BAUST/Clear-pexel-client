@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Font from 'react-font';
 import useAuth from '../../Hooks/useAuth';
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -23,13 +24,13 @@ const MyOrder = () => {
             .then((res) => res.json())
             .then((data) => {
                 setOrders(data);
-            }).catch(error => {
+            }).catch((error) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
-            });;
+            });
     }, [user.email]);
 
     const handleCloseModal = () => {
@@ -65,7 +66,13 @@ const MyOrder = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     };
     return (<div>
@@ -117,7 +124,9 @@ const MyOrder = () => {
                             <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Quantity</TableCell>
                             <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Price</TableCell>
                             <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Status</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}> Payment</TableCell>
                             <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}> Delete</TableCell>
+
 
                         </TableRow>
                     </TableHead>
@@ -153,6 +162,7 @@ const MyOrder = () => {
                                             <i className="me-1 fas fa-check-circle fs-5 text-success"></i>
                                         )}
                                         {order?.orderStatus}{" "}</TableCell>
+                                    <TableCell align="center">{order?.payment ? 'paid' : <Link className="text-decoration-none" to={`/dashboard/payment/${order?._id}`}><i className="fab fa-amazon-pay fs-3 fw-bold"></i></Link>}</TableCell>
                                     <TableCell align="center">{order?.orderStatus === "Shipped" &&
                                         <p className="text-warning fw-bold">Your product is on the way</p>
                                     }

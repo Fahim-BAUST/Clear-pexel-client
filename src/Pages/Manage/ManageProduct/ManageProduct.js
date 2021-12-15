@@ -30,6 +30,12 @@ const ManageProduct = () => {
             .then(res => res.json())
             .then(data => {
                 setProducts(data);
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
             })
 
     }, [])
@@ -59,7 +65,13 @@ const ManageProduct = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     };
     return (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile, signOut, getIdToken } from "firebase/auth";
 import initializeFirebase from '../Login/Firebase/firebase.init';
 import Swal from 'sweetalert2';
 
@@ -10,6 +10,7 @@ const useFirebase = () => {
     const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [admin, setAdmin] = useState(false);
+    const [token, setToken] = useState('');
 
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
@@ -29,7 +30,7 @@ const useFirebase = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: `${error.message}`,
+                        text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                     })
                 });
                 history.replace('/');
@@ -38,7 +39,7 @@ const useFirebase = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${error.message}`,
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
             })
             .finally(() => setIsLoading(false));
@@ -56,7 +57,7 @@ const useFirebase = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${error.message}`,
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
 
             })
@@ -76,7 +77,7 @@ const useFirebase = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${error.message}`,
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
             }).finally(() => setIsLoading(false));
     }
@@ -86,6 +87,11 @@ const useFirebase = () => {
         const unsubscribed = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
+
+                getIdToken(user)
+                    .then(idToken => {
+                        setToken(idToken);
+                    })
             } else {
                 setUser({})
             }
@@ -111,7 +117,7 @@ const useFirebase = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: `${error.message}`,
+                text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
             })
         })
             .finally(() => setIsLoading(false));
@@ -131,7 +137,7 @@ const useFirebase = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${error.message}`,
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
             })
 
@@ -140,6 +146,7 @@ const useFirebase = () => {
     return {
         user,
         isLoading,
+        token,
         registerUser,
         loginUser,
         signInWithGoogle,

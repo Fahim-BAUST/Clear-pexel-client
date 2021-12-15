@@ -20,11 +20,11 @@ const ManageAllOrder = () => {
         fetch("https://gentle-fortress-91581.herokuapp.com/allOrders")
             .then((res) => res.json())
             .then((data) => setOrders(data))
-            .catch(error => {
+            .catch((error) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                 })
             });
     }, [orders]);
@@ -64,7 +64,13 @@ const ManageAllOrder = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     };
 
@@ -93,7 +99,13 @@ const ManageAllOrder = () => {
                         text: 'Something went wrong!',
                     })
                 }
-            });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     };
     return (
@@ -148,6 +160,7 @@ const ManageAllOrder = () => {
 
                                 <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Status</TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Change Status</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Payment Status</TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}>Delete</TableCell>
 
                             </TableRow>
@@ -245,6 +258,7 @@ const ManageAllOrder = () => {
                                                 </li>
                                             </ul>
                                         </div></TableCell>
+                                        <TableCell align="center"> {order?.payment ? "paid" : "Not paid yet"}</TableCell>
                                         <TableCell align="center"> <button
                                             onClick={() => handleOpenModal(order._id)}
                                             className="ms-1 border-0"

@@ -53,7 +53,6 @@ function Dashboard(props) {
 
                 <Link style={{ textDecoration: "none" }} to={`${url}/addReview`}><Button sx={{ fontWeight: "bold" }} color="secondary">Add Review</Button></Link>
                 <Divider />
-                <Link style={{ textDecoration: "none" }} to={`${url}/payment`}><Button sx={{ fontWeight: "bold" }} color="secondary">Pay</Button></Link>
                 <Divider />
             </Box>
                 :
@@ -171,9 +170,10 @@ function Dashboard(props) {
                         <Route path={`${path}/addReview`}>
                             <AddReview></AddReview>
                         </Route>
-                        <Route path={`${path}/payment`}>
+                        <Route path={`${path}/payment/:orderId`}>
                             <Payment></Payment>
                         </Route>
+
                         <AdminRoute path={`${path}/allOrder`}>
                             <ManageAllOrder></ManageAllOrder>
                         </AdminRoute>

@@ -52,6 +52,12 @@ const AddReview = () => {
                                 'error'
                             )
                         }
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                        })
                     })
 
             }

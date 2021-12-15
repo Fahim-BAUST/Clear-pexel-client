@@ -1,18 +1,22 @@
 import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import useAuth from '../../Hooks/useAuth';
 
 const MakeAdmin = () => {
     const [email, setEmail] = useState('');
+    const { token } = useAuth();
 
     const handleOnBlur = e => {
         setEmail(e.target.value);
     }
+    // https://gentle-fortress-91581.herokuapp.com/
     const handleAdminSubmit = e => {
         const user = { email };
         fetch('https://gentle-fortress-91581.herokuapp.com/user/admin', {
             method: 'PUT',
             headers: {
+                'authorization': `Bearer ${token}`,
                 'content-type': 'application/json'
             },
             body: JSON.stringify(user)
@@ -32,6 +36,12 @@ const MakeAdmin = () => {
                         text: 'Something went wrong!',
                     })
                 }
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
             })
 
         e.preventDefault()

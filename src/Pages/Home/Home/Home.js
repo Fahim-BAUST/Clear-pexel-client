@@ -12,6 +12,7 @@ import Slider from 'react-slick';
 import SliderItem from '../Slider/SliderItem';
 import { Alert, Snackbar } from '@mui/material';
 import SocialMedia from './SocialMedia/SocialMedia';
+import Swal from 'sweetalert2';
 
 
 const Home = () => {
@@ -91,7 +92,13 @@ const Home = () => {
                 setNikon(nikon);
                 const panasonic = data.filter(data => data?.category === 'panasonic')
                 setPanasonic(panasonic);
-            }).catch(error => setWrong(true));
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     }, [])
 
@@ -99,7 +106,13 @@ const Home = () => {
         fetch('https://gentle-fortress-91581.herokuapp.com/review')
             .then(res => res.json())
             .then(data => setReview(data))
-            .catch(error => setWrong(true));
+            .catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
+                })
+            })
 
     }, [])
     return (

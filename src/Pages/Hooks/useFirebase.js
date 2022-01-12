@@ -15,7 +15,7 @@ const useFirebase = () => {
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
 
-    const registerUser = (email, password, name, history) => {
+    const registerUser = (email, password, name, navigate) => {
         setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -33,7 +33,7 @@ const useFirebase = () => {
                         text: `${error.message === "Failed to fetch" ? "No network connection" : error.message}`,
                     })
                 });
-                history.replace('/');
+                navigate('/');
             })
             .catch((error) => {
                 Swal.fire({
@@ -45,12 +45,12 @@ const useFirebase = () => {
             .finally(() => setIsLoading(false));
     }
 
-    const loginUser = (email, password, location, history) => {
+    const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const destination = location?.state?.from || '/';
-                history.replace(destination);
+                navigate(destination);
 
             })
             .catch((error) => {
@@ -64,7 +64,7 @@ const useFirebase = () => {
             .finally(() => setIsLoading(false));
     }
 
-    const signInWithGoogle = (location, history) => {
+    const signInWithGoogle = (location, navigate) => {
         setIsLoading(true);
         signInWithPopup(auth, googleProvider)
             .then((result) => {
@@ -72,7 +72,7 @@ const useFirebase = () => {
                 // save user to the database 
                 saveUser(user.email, user.displayName, 'PUT');
                 const destination = location?.state?.from || '/';
-                history.replace(destination);
+                navigate(destination);
             }).catch((error) => {
                 Swal.fire({
                     icon: 'error',

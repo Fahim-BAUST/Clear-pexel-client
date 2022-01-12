@@ -11,21 +11,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import {
-    Switch,
-    Route,
+
     Link,
-    useRouteMatch,
-    NavLink
+
+    NavLink,
+    Outlet
 } from "react-router-dom";
-import MyOrder from '../../Manage/MyOrder/MyOrder';
-import ManageAllOrder from '../../Manage/ManageAllOrder/ManageAllOrder';
-import MakeAdmin from '../../Manage/MakeAdmin/MakeAdmin';
+
 import useAuth from '../../Hooks/useAuth';
-import AdminRoute from '../../Login/AdminRoute/AdminRoute';
-import AddReview from '../../Manage/AddReview/AddReview';
-import Payment from '../../Manage/Payment/Payment';
-import AddProduct from '../../Manage/AddProduct/AddProduct';
-import ManageProduct from '../../Manage/ManageProduct/ManageProduct';
+
 
 
 const drawerWidth = 200;
@@ -33,7 +27,7 @@ const drawerWidth = 200;
 function Dashboard(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    let { path, url } = useRouteMatch();
+
     const { admin, logout } = useAuth();
 
     const handleDrawerToggle = () => {
@@ -48,22 +42,22 @@ function Dashboard(props) {
             <Link style={{ textDecoration: "none" }} to="/home"><Button style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ my: 1, fontWeight: "bold" }} variant="contained" >Home</Button></Link>
             <Divider />
             {!admin ? <Box>
-                <Link style={{ textDecoration: "none" }} to={`${url}`}><Button sx={{ fontWeight: "bold" }} color="secondary">My Order</Button></Link>
+                <Link style={{ textDecoration: "none" }} to={"/dashboard/myOrder"}><Button sx={{ fontWeight: "bold" }} color="secondary">My Order</Button></Link>
                 <Divider />
 
-                <Link style={{ textDecoration: "none" }} to={`${url}/addReview`}><Button sx={{ fontWeight: "bold" }} color="secondary">Add Review</Button></Link>
+                <Link style={{ textDecoration: "none" }} to={`/dashboard/addReview`}><Button sx={{ fontWeight: "bold" }} color="secondary">Add Review</Button></Link>
                 <Divider />
                 <Divider />
             </Box>
                 :
                 <Box>
-                    <Link style={{ textDecoration: "none" }} to={`${url}/allOrder`}><Button sx={{ fontWeight: "bold" }} color="inherit">Manage All Order</Button></Link>
+                    <Link style={{ textDecoration: "none" }} to={`/dashboard/allOrder`}><Button sx={{ fontWeight: "bold" }} color="inherit">Manage All Order</Button></Link>
                     <Divider />
-                    <Link style={{ textDecoration: "none" }} to={`${url}/addProduct`}><Button sx={{ fontWeight: "bold" }} color="inherit">Add Product</Button></Link>
+                    <Link style={{ textDecoration: "none" }} to={`/dashboard/addProduct`}><Button sx={{ fontWeight: "bold" }} color="inherit">Add Product</Button></Link>
                     <Divider />
-                    <Link style={{ textDecoration: "none" }} to={`${url}/manageProduct`}><Button sx={{ fontWeight: "bold" }} color="inherit">Manage Product</Button></Link>
+                    <Link style={{ textDecoration: "none" }} to={`/dashboard/manageProduct`}><Button sx={{ fontWeight: "bold" }} color="inherit">Manage Product</Button></Link>
                     <Divider />
-                    <Link style={{ textDecoration: "none" }} to={`${url}/makeAdmin`}><Button sx={{ fontWeight: "bold" }} color="inherit">Make Admin</Button></Link>
+                    <Link style={{ textDecoration: "none" }} to={`/dashboard/makeAdmin`}><Button sx={{ fontWeight: "bold" }} color="inherit">Make Admin</Button></Link>
                 </Box>}
             <Divider />
             <Button sx={{ my: 1 }} variant="contained" onClick={logout} color="error">Log Out</Button>
@@ -159,36 +153,7 @@ function Dashboard(props) {
                 >
                     <Toolbar />
 
-                    <Switch>
-                        {admin ? <AdminRoute exact path={path}>
-                            <ManageAllOrder></ManageAllOrder>
-                        </AdminRoute > :
-                            <Route exact path={path}>
-                                <MyOrder></MyOrder>
-                            </Route>
-                        }
-                        <Route path={`${path}/addReview`}>
-                            <AddReview></AddReview>
-                        </Route>
-                        <Route path={`${path}/payment/:orderId`}>
-                            <Payment></Payment>
-                        </Route>
-
-                        <AdminRoute path={`${path}/allOrder`}>
-                            <ManageAllOrder></ManageAllOrder>
-                        </AdminRoute>
-                        <AdminRoute path={`${path}/makeAdmin`}>
-                            <MakeAdmin></MakeAdmin>
-                        </AdminRoute >
-                        <AdminRoute path={`${path}/addProduct`}>
-                            <AddProduct></AddProduct>
-                        </AdminRoute >
-                        <AdminRoute path={`${path}/manageProduct`}>
-                            <ManageProduct></ManageProduct>
-                        </AdminRoute >
-
-
-                    </Switch>
+                    <Outlet></Outlet>
                 </Box>
             </Box>
         </Box>

@@ -9,7 +9,6 @@ const CatagoryProduct = (props) => {
     const { user } = useAuth();
     const [quantity, setQuantity] = useState(1);
 
-
     const handleAddToCart = (id, name, cost, image) => {
         const data = {};
         data.product = id;
@@ -70,7 +69,7 @@ const CatagoryProduct = (props) => {
                     <Divider></Divider>
                     <div className="input-group-sm  input-item d-flex text-center mx-auto justify-content-center mt-2">
                         <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
-                        <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "50%", border: "2px solid tomato" }} value={quantity} />
+                        <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "50%", border: "2px solid tomato", paddingLeft: "15px" }} value={quantity} />
                         <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>
                     </div>
                     {user?.email ? <Button onClick={() => handleAddToCart(_id, name, cost, image)} style={{ color: "#3F000F", backgroundColor: "#E0FFFF" }} sx={{ marginTop: 2, fontWeight: "bold" }} variant="contained" size="small"><i className="fas fa-luggage-cart me-2"></i> Cart? </Button>

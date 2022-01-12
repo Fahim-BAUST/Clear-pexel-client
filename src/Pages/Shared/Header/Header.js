@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Font from 'react-font';
 import useAuth from '../../Hooks/useAuth';
+import { color } from '@mui/system';
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -48,40 +49,43 @@ const Header = () => {
                                         <i className="fas fa-camera"></i>    Camera details
                                     </NavLink>
                                 </li>
+                                <li className="nav-item">
+
+                                    {user?.email && <NavLink
+                                        className="nav-link "
+                                        to="/dashboard"
+
+                                        activeStyle={{
+                                            fontWeight: "bolder"
+
+                                        }}
+                                    >
+                                        <i className="fas fa-viruses"></i> Dashboard
+                                    </NavLink>}
+                                </li>
+                                <li className="nav-item">
+
+                                    {user?.email && <NavLink
+                                        className="nav-link "
+                                        to="/placeOrder"
+
+                                        activeStyle={{
+                                            fontWeight: "bolder",
+                                            color: "dark"
+
+                                        }}
+                                    >
+                                        Cart<i className="fas fa-cart-arrow-down text-warning fw-bold"></i>
+                                    </NavLink>}
+                                </li>
 
 
                             </ul>
                             <form className="d-flex align-items-center">
-                                {user?.email && <NavLink
-                                    className="nav-link text-dark fw-bold"
-                                    to="/dashboard"
-
-
-                                    activeStyle={{
-                                        fontWeight: "bolder"
-
-                                    }}
-                                >
-                                    <i className="fas fa-viruses"></i> Dashboard
-                                </NavLink>}
-
-                                {user?.email && <NavLink
-                                    className="nav-link text-dark fw-bold"
-                                    to="/placeOrder"
-
-                                    activeStyle={{
-                                        fontWeight: "bolder"
-
-                                    }}
-                                >
-                                    Cart<i className="fas fa-cart-arrow-down text-warning fw-bold"></i>
-                                </NavLink>}
-
-
 
                                 {user?.photoURL && <img style={{ width: "35px" }} className="img-fluid rounded-circle   text-white" src={user.photoURL} alt="" />}
 
-                                {user?.email && <span className="me-2">{user.displayName}</span>}
+                                {user?.email && <span className="ms-2 me-2">{user.displayName}</span>}
 
                                 {user?.email ?
                                     <button onClick={logout} className="btn btn-outline-danger ms-2" type="submit"><i className="fas fa-sign-in-alt"></i> Logout</button> :

@@ -2,7 +2,7 @@ import { Button, Container, Grid, LinearProgress, TextField } from '@mui/materia
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import Font from 'react-font';
-import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 import Header from '../../Shared/Header/Header';
 import Swal from 'sweetalert2';
@@ -12,7 +12,7 @@ const Login = () => {
     const { user, loginUser, isLoading, signInWithGoogle } = useAuth();
 
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate()
 
     const handleOnChange = e => {
         const field = e.target.name;
@@ -22,11 +22,11 @@ const Login = () => {
         setLoginData(newLoginData);
     }
     const handleLoginSubmit = e => {
-        loginUser(loginData.email, loginData.password, location, history);
+        loginUser(loginData.email, loginData.password, location, navigate);
         e.preventDefault();
     }
     const handleGoogleSignIn = () => {
-        signInWithGoogle(location, history)
+        signInWithGoogle(location, navigate)
     }
 
     const loginTrue = () => {

@@ -131,6 +131,7 @@ const ManageProduct = () => {
                             </button>
                         </div>
                         <Divider></Divider>
+
                     </div>)
 
                     }

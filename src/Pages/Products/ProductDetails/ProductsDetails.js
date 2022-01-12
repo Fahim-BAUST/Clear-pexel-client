@@ -142,7 +142,7 @@ const ProductsDetails = () => {
                             <div className="input-group-sm w-50 d-flex justify-content-start ">
                                 <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
 
-                                <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato" }} value={quantity} />
+                                <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato", paddingLeft: "15px" }} value={quantity} />
 
 
                                 <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>

@@ -21,12 +21,14 @@
     "react-dom": "^17.0.2",
     "react-font": "^1.2.1",
     "react-hook-form": "^7.18.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "react-slick": "^0.28.1",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.2.0",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "react-animated-slider": "1.1.4",
+    "normalize.css": "7.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

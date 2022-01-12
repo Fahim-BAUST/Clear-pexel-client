@@ -95,7 +95,7 @@ const Product = (props) => {
 
                     </CardContent>
                 </Link>
-                <div className="d-flex justify-content-between container mb-2 align-items-center">
+                <div style={{ marginTop: "-10px" }} className="d-flex justify-content-between container mb-2 align-items-center">
 
                     <Typography
                         style={{ fontFamily: "cursive" }}
@@ -104,7 +104,7 @@ const Product = (props) => {
                     </Typography>
                     <div className="input-group-sm w-50 d-flex justify-content-end ">
                         <button onClick={() => quantityManage(false)} className="btn btn-default"><i className="fas fa-minus"></i></button>
-                        <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato" }} value={quantity} />
+                        <input className="text-center fw-bold rounded-pill" disabled type="number" style={{ width: "30%", border: "2px solid tomato", paddingLeft: "15px" }} value={quantity} />
                         <button onClick={() => quantityManage(true)} className="btn btn-default"><i className="fas fa-plus"></i></button>
                     </div>
                 </div>

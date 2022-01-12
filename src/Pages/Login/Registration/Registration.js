@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Grid, LinearProgress, TextField } from '@mui/material';
 import Font from 'react-font';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 import { Box } from '@mui/system';
 import Header from '../../Shared/Header/Header';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 const Registration = () => {
     const { user, registerUser, isLoading, } = useAuth();
     const [loginData, setLoginData] = useState({});
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleOnBlur = e => {
         const field = e.target.name;
@@ -24,7 +24,7 @@ const Registration = () => {
             alert('Your password did not match');
             return
         }
-        registerUser(loginData?.email, loginData?.password, loginData?.name, history);
+        registerUser(loginData?.email, loginData?.password, loginData?.name, navigate);
         e.preventDefault();
     }
     const loginTrue = () => {

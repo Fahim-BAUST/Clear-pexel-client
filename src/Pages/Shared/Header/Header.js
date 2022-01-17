@@ -9,14 +9,13 @@ const Header = () => {
     return (
         <div className="sticky-top shadow ">
             <Font family="Zen Antique">
-
-                <nav style={{ backgroundColor: "#E0FFFF" }} className="navbar bg-opacity-10 navbar-expand-lg navbar-light animate_animated animate__fadeInDown ">
+                <nav style={{ backgroundColor: 'white' }} className="navbar bg-opacity-10 navbar-expand-lg navbar-light animate_animated animate__fadeInDown ">
                     <div className="container-fluid">
                         <NavLink
                             className="navbar-brand "
                             to="/home"
                         >
-                            <img style={{ width: "130px", height: "40px", borderRadius: "20px" }} className="img-fluid" src="https://cdn.steemitimages.com/DQmQ82HXGhdsnFb2MCXvcP1Vaf8Z4YoX72wZxnZdwKNuCaK/image.png" alt="" />
+                            <Font family='Neonderthaw'> <span style={{ fontWeight: 'bold', fontSize: '30px' }}>Clear Pixels</span> </Font>
                         </NavLink>
                         <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>

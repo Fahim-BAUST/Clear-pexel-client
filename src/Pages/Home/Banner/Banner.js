@@ -17,7 +17,7 @@ const Banner = () => {
         {
             title: "Best Trusted E-commerce Website",
             description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.",
+                "We are the world’s only full-service destination for photo, video and electronics.We’re more than a camera store—we offer the best selection and prices on professional photography and video gear",
             button: "Buy now",
             image: "https://i.ibb.co/RQcfTZn/21-Z-2103-w026-n002-240-B-p1-240.jpg",
             link: "/products"
@@ -26,15 +26,15 @@ const Banner = () => {
         {
             title: "Choose Your best Camera With Best Price",
             description:
-                "Aenean eu leo quam. Pellentesque ornare sem lacinia  nibh, ut fermentum massa justo sit amet risus. Cras justo odio, dapibus ac facilisis.",
+                "Equip your creativity with the best & newest Mirrorless, Point & Shoot, and DSLR photography equipment from brands like Sony, Canon and Nikon, or shop for the latest in smart tech, gaming, drones, musical instruments and recording studio gear .",
             button: "Read More",
             image: "https://i.ibb.co/HYCJJjf/15-Z-2104-w026-n002-380-B-p1-380.jpg",
             link: "/products"
         },
         {
-            title: "One Of The Best Camera Selling Website",
+            title: "Exclusive Savings All Year Long",
             description:
-                "Nullam id dolor id nibh ultricies vehicula ut id elit. Cras mattis consectetur Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis  purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.",
+                "For savings you won't find anywhere else and for weekly trending deals on top products from industry leading brands, browse Deals, Used, Deal Of The Day, only at clear Pixels.",
             button: "Discover",
             image: "https://i.imgur.com/DCdBXcq.jpg",
             link: "/products"

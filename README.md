@@ -1,14 +1,16 @@
 # Welcome to My Project
 [Clear Pixel](https://clear-pixel-update.web.app)
 
-## Why Best?
-* Quick delivery
-* You can add review
-* Search engine optimized t
-* Promotion & discount code tools
-* Email marketing features 
-* Multiple payment options (Credit card, PayPal, PO, Terms, etc.)
+### Description
+* This is a niche website (single product category selling website).
+* User section: - login, add to cart, manage cart, order item, manage orders, add a review, payment(stripe) etc.
+* Admin section:- login, make admin, view all orders, manage orders,add product, manage a product.
+* JWT token verify
+## Admin login: admin@gmail.com ||pass: adminadmin
 
+
+## Technology Used
+React, React Router, Context API, Material-ui, Bootstrap, Node, Express, MongoDB, Firebase and some react animation library, etc.
 
 
 

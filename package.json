@@ -22,7 +22,7 @@
     "react-font": "^1.2.1",
     "react-hook-form": "^7.18.0",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "react-slick": "^0.28.1",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.2.0",
